@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <script>
+        (function () {
+            'use strict';
+
+            if (!('serviceWorker' in navigator)) {
+                console.log("Service Worker not supported");
+                return;
+            }
+            navigator.serviceWorker.register('service-worker.js')
+                .then(function () {
+                    console.log('Registered');
+                })
+                .catch(error => {
+                    console.log('Registration failed:', error);
+                });
+
+        })();
+    </script>
+        </head>
+<script src="https://akless.github.io/ccm/ccm.js"></script>
+<!--<script src="ccm.nav-hamburger.js"></script>-->
+<script src="https://akless.github.io/ccm-components/content/versions/ccm.content-2.0.0.min.js"></script>
+<script src="./ccm.se1-menu.js"></script>
+<ccm-se1-menu inner='["//kaul.inf.h-brs.de/data/2017/se1/le00.html","//kaul.inf.h-brs.de/data/2017/se1/le01.html","//kaul.inf.h-brs.de/data/2017/se1/le03.html"]'></ccm-se1-menu>
