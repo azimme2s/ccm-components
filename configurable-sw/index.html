@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://akless.github.io/ccm/ccm.js"></script>
+    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+        ccm.start(
+            './ccm.configurable-sw.js',
+            {
+                'root': document.querySelector('head'),
+                'cacheArray': [
+                    '/',
+                    '/ccm.configurable-sw.js',
+                    '/index.html',
+                    '/service-worker.js'
+                ]
+            }
+        );
+    </script>
+</head>
+
+</html>

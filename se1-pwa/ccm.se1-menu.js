@@ -43,10 +43,11 @@
             inner: []
         },
         Instance: function () {
-            this.start = function () {
+            this.start = function (callback) {
                 var main_elem = this.ccm.helper.html(this.html.main);
                 this.element.appendChild(main_elem);
                 this.buildNav();
+                if(callback) callback();
             };
             this.buildNav = function () {
                 var content = this.content;
