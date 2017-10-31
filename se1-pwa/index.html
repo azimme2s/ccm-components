@@ -13,14 +13,32 @@
                 console.log("Service Worker not supported");
                 return;
             }
-            navigator.serviceWorker.register('service-worker.js')
+            navigator.serviceWorker.register('service-worker.js', {
+                    scope: '.'
+                })
                 .then(function () {
                     console.log('Registered');
                 })
-                .catch(error => {
+                .catch(function (error) {
                     console.log('Registration failed:', error);
                 });
 
+            navigator.serviceWorker.addEventListener('controllerchange', function(event) {
+                console.log(
+                    '[controllerchange] A "controllerchange" event has happened ' +
+                    'within navigator.serviceWorker: ', event
+                );
+                navigator.serviceWorker.controller.addEventListener('statechange',
+                    function() {
+                        console.log('[controllerchange][statechange] ' +
+                            'A "statechange" has occured: ', this.state
+                        );
+                        if (this.state === 'activated') {
+                            console.log("Is now offline usable!");
+                        }
+                    }
+                );
+            });
         })();
     </script>
         </head>
