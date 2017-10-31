@@ -46,7 +46,7 @@
                                             'tag': 'button',
                                             'type': 'button',
                                             'class': 'button-close',
-                                            'inner': 'Close'
+                                            'inner': '&#x2716'
                                         },
                                         {
                                             'tag': 'div',
@@ -69,7 +69,7 @@
                                 'tag': 'button',
                                 'type': 'button',
                                 'class': 'button-open',
-                                'inner': 'Menu'
+                                'inner': '&#9776;'
                             }
                         },
                         {
