@@ -4,24 +4,24 @@
     var dataCacheName = 'v1';
 
     var filesToCache = [
-        '/',
-        '/ccm.se1-menu.js',
-        '/ccm.nav-hamburger.js',
-        '/resources/style.css',
+        './',
+        './ccm.se1-menu.js',
+        './ccm.nav-hamburger.js',
+        './resources/style.css',
         'http://kaul.inf.h-brs.de/data/2017/se1/le00.html',
         'http://kaul.inf.h-brs.de/data/2017/se1/le01.html',
         'http://kaul.inf.h-brs.de/data/2017/se1/le02.html',
         'http://kaul.inf.h-brs.de/data/2017/se1/le03.html',
-       /* 'http://kaul.inf.h-brs.de/data/2017/se1/le04.html',
-        'http://kaul.inf.h-brs.de/data/2017/se1/le05.html',
-        'http://kaul.inf.h-brs.de/data/2017/se1/le06.html',
-        'http://kaul.inf.h-brs.de/data/2017/se1/le07.html',
-        'http://kaul.inf.h-brs.de/data/2017/se1/le08.html',
-        'http://kaul.inf.h-brs.de/data/2017/se1/le09.html',
-        'http://kaul.inf.h-brs.de/data/2017/se1/le10.html',
-        'http://kaul.inf.h-brs.de/data/2017/se1/le11.html',
-        'http://kaul.inf.h-brs.de/data/2017/se1/le12.html',
-        'http://kaul.inf.h-brs.de/data/2017/se1/le13.html',*/
+        /* 'http://kaul.inf.h-brs.de/data/2017/se1/le04.html',
+         'http://kaul.inf.h-brs.de/data/2017/se1/le05.html',
+         'http://kaul.inf.h-brs.de/data/2017/se1/le06.html',
+         'http://kaul.inf.h-brs.de/data/2017/se1/le07.html',
+         'http://kaul.inf.h-brs.de/data/2017/se1/le08.html',
+         'http://kaul.inf.h-brs.de/data/2017/se1/le09.html',
+         'http://kaul.inf.h-brs.de/data/2017/se1/le10.html',
+         'http://kaul.inf.h-brs.de/data/2017/se1/le11.html',
+         'http://kaul.inf.h-brs.de/data/2017/se1/le12.html',
+         'http://kaul.inf.h-brs.de/data/2017/se1/le13.html',*/
         'http://kaul.inf.h-brs.de/data/ccm/form/ccm.form.js',
         'http://kaul.inf.h-brs.de/data/ccm/upload/ccm.upload.js',
         'http://kaul.inf.h-brs.de/data/ccm/highlight/ccm.highlight.js',
@@ -36,21 +36,6 @@
         'https://akless.github.io/ccm-components/libs/md5/md5.min.js'
     ];
     self.addEventListener('fetch', function (event) {
-        /*event.respondWith(
-            caches.open(cacheName).then(function(cache) {
-                return cache.match(event.request).then(function(response) {
-                    var fetchPromise = fetch(event.request).then(function(networkResponse) {
-                        cache.put(event.request, networkResponse.clone());
-                        return networkResponse;
-                    });
-                    return response || fetchPromise;
-                })
-            })
-        );*/
-        /*console.log("The service worker is serving the asset.");
-        event.respondWith(fromNetwork(event.request, 400).catch(function () {
-            return fromCache(event.request);
-        }));*/
         event.respondWith(
             caches.match(event.request)
                 .then(function (response) {
