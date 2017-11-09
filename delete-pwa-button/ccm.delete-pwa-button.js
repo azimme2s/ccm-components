@@ -34,11 +34,13 @@
                 self.element.appendChild(footer);
             };
             this.deletePWA = function(){
-                navigator.serviceWorker.getRegistrations().then(function(registrations) {
-                    console.log("I have this: ", registrations);
-                    for(let registration of registrations) {
-                        registration.unregister()
-                    } })
+                navigator.serviceWorker.getRegistration().then(function(registration) {
+                    console.log(registration);
+                    //magic where all the caches get Deleted, an by all, I mean really all caches!!!
+                    caches.keys().then(keyList => keyList.map(key => caches.delete(key)));
+                    //Unregsiter de Service Worker
+                    registration.unregister();
+                });
             }
         }
     };
