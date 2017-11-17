@@ -42,7 +42,6 @@
                     }
                 }
             },
-            css: ['ccm.load', './style.css'],
         },
         Instance: function () {
             let self = this;
@@ -54,7 +53,7 @@
             };
             this.start = function (callback) {
                 this.buildView();
-                self.element.querySelector('#delete-pwa-button').addEventListener('click', self.createModalDialog);
+                self.element.querySelector('#delete-pwa-button').addEventListener('click', self.deleteNotifaction);
                 if (callback) callback();
             };
             this.buildView = function () {
@@ -63,47 +62,32 @@
                 let modal = self.ccm.helper.html(my.html.modal);
                 self.element.appendChild(modal);
             };
-            this.createModalDialog = function () {
-                let myModal = self.element.querySelector('#myModal');
-                myModal.style.display = 'block';
-                let span = self.element.querySelector('.close');
-                span.onclick = function () {
-                    myModal.style.display = "none";
-                };
-                window.onclick = function () {
-                    if (event.target === myModal) {
-                        myModal.style.display = "none";
+            this.deleteNotifaction = function () {
+                Notification.requestPermission().then(function (premission) {
+                    if(premission === "granted"){
+                        navigator.serviceWorker.ready.then(function(registration) {
+                            registration.showNotification("App Löschen", {
+                                body: "Soll der Cache der app "+self.appcachename+" gelöscht werden?",
+                                tag: "delete-pwa",
+                                actions: [
+                                    {
+                                        action: "deleteCache",
+                                        title: "Ja",
+                                    },
+                                    {
+                                        action: "confirm2",
+                                        title: "Nein"
+                                    }
+                                ],
+                                vibrate: [500,110,500,110,450,110,200,110,170,40,450,110,200,110,170,40,500],
+                            });
+                        });
                     }
-                };
-
-                let modalHeader = self.element.querySelector('.modal-header');
-                let h3 = document.createElement("h3");
-                h3.innerHTML = 'Zu löschende Caches';
-                modalHeader.appendChild(h3);
-
-                caches.keys().then(keyList => keyList.map(item => {
-                    let checkBox = document.createElement('input');
-                    checkBox.setAttribute('type', 'checkbox');
-                    checkBox.innerHTML = item;
-                    console.log(checkBox);
-                    self.element.querySelector('.modal-body').appendChild(checkBox);
-                }));
-
-                let modalFooter = self.element.querySelector('.modal-footer');
-                let deleteBTN = document.createElement('button');
-                deleteBTN.innerHTML = "Bestätigen";
-                deleteBTN.addEventListener("click",self.deleteChoosenOne());
-                modalFooter.appendChild(deleteBTN);
+                });
             };
-            this.deleteChoosenOne = function () {
-                let allInputs = self.element.querySelectorAll('input');
-                console.log(allInputs);
-                //let choosen = allInputs.map(item => item.getAttribute('checked'));
 
+            this.unregisterSW = function () {
                 navigator.serviceWorker.getRegistration().then(function (registration) {
-                    console.log(registration);
-                    //choosen.map(i => caches.delete(i));
-                    //Unregsiter de Service Worker
                     registration.unregister();
                 });
             };

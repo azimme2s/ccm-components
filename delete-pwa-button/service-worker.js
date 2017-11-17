@@ -65,4 +65,10 @@
             });
         });
     }
+    self.addEventListener('notificationclick', function(event) {
+        if (event.action === 'deleteCache') {
+            caches.delete(cacheName);
+            event.notification.close();
+        }
+    }, false);
 }());
