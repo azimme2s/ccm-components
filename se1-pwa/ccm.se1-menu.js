@@ -27,7 +27,7 @@
 (function () {
     var component = {
         name: 'se1-menu',
-        ccm: 'https://akless.github.io/ccm/ccm.js',
+        ccm: 'https://akless.github.io/ccm/version/ccm-11.0.0.js',
         config: {
             html: {
                 main: {
@@ -37,7 +37,7 @@
                     ]
                 }
             },
-            navhamburger: ['ccm.component','./ccm.nav-hamburger.js'],
+            navhamburger: ['ccm.component', './ccm.nav-hamburger.js'],
             content: ['ccm.component', 'https://akless.github.io/ccm-components/content/versions/ccm.content-2.0.0.min.js'],
             css: ['ccm.load', '//kaul.inf.h-brs.de/data/ccm/exercise/resources/default.css'],
             inner: []
@@ -47,7 +47,7 @@
                 var main_elem = this.ccm.helper.html(this.html.main);
                 this.element.appendChild(main_elem);
                 this.buildNav();
-                if(callback) callback();
+                if (callback) callback();
             };
             this.buildNav = function () {
                 var content = this.content;
@@ -58,10 +58,18 @@
                     return {
                         'text': 'Software Engineering LE ' + leCounter,
                         'action': function () {
-                           content.start({root: domContent, inner:['ccm.load', element]}, function (instance) {
-                                domContent.appendChild(domContent);
-                               }
-                           );
+                            if (domContent.shadowRoot) {
+                                console.log(domContent.shadowRoot.childNodes);
+                                domContent.shadowRoot.querySelector('#element').replaceWith(content);
+                                console.log(domContent);
+                            }
+                            else{
+                                content.start({root: domContent, inner: ['ccm.load', element]}, function (instance) {
+                                        console.log(instance);
+                                    }
+                                );
+                            }
+
                         }
                     }
                 });
@@ -74,8 +82,20 @@
         }
     };
 
-    function p(){
+    function p() {
         window.ccm[v].component(component);
     }
-    var f="ccm."+component.name+(component.version?"-"+component.version.join("."):"")+".js";if(window.ccm&&null===window.ccm.files[f])window.ccm.files[f]=component;else{var n=window.ccm&&window.ccm.components[component.name];n&&n.ccm&&(component.ccm=n.ccm),"string"==typeof component.ccm&&(component.ccm={url:component.ccm});var v=component.ccm.url.split("/").pop().split("-");if(v.length>1?(v=v[1].split("."),v.pop(),"min"===v[v.length-1]&&v.pop(),v=v.join(".")):v="latest",window.ccm&&window.ccm[v])p();else{var e=document.createElement("script");document.head.appendChild(e),component.ccm.integrity&&e.setAttribute("integrity",component.ccm.integrity),component.ccm.crossorigin&&e.setAttribute("crossorigin",component.ccm.crossorigin),e.onload=function(){p(),document.head.removeChild(e)},e.src=component.ccm.url}}
+
+    var f = "ccm." + component.name + (component.version ? "-" + component.version.join(".") : "") + ".js";
+    if (window.ccm && null === window.ccm.files[f]) window.ccm.files[f] = component; else {
+        var n = window.ccm && window.ccm.components[component.name];
+        n && n.ccm && (component.ccm = n.ccm), "string" == typeof component.ccm && (component.ccm = {url: component.ccm});
+        var v = component.ccm.url.split("/").pop().split("-");
+        if (v.length > 1 ? (v = v[1].split("."), v.pop(), "min" === v[v.length - 1] && v.pop(), v = v.join(".")) : v = "latest", window.ccm && window.ccm[v]) p(); else {
+            var e = document.createElement("script");
+            document.head.appendChild(e), component.ccm.integrity && e.setAttribute("integrity", component.ccm.integrity), component.ccm.crossorigin && e.setAttribute("crossorigin", component.ccm.crossorigin), e.onload = function () {
+                p(), document.head.removeChild(e)
+            }, e.src = component.ccm.url
+        }
+    }
 }());

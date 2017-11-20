@@ -88,7 +88,7 @@
                 }
             },
             'css': ['ccm.load', './resources/style.css'],
-            'headerText' : '',
+            'headerText' : 'SE1 App',
             'section': []
         },
         
