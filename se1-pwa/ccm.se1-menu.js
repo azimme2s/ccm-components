@@ -27,7 +27,7 @@
 (function () {
     var component = {
         name: 'se1-menu',
-        ccm: 'https://akless.github.io/ccm/version/ccm-11.0.0.js',
+        ccm: 'https://akless.github.io/ccm/ccm.js',
         config: {
             html: {
                 main: {
@@ -58,18 +58,10 @@
                     return {
                         'text': 'Software Engineering LE ' + leCounter,
                         'action': function () {
-                            if (domContent.shadowRoot) {
-                                console.log(domContent.shadowRoot.childNodes);
-                                domContent.shadowRoot.querySelector('#element').replaceWith(content);
-                                console.log(domContent);
-                            }
-                            else{
-                                content.start({root: domContent, inner: ['ccm.load', element]}, function (instance) {
-                                        console.log(instance);
-                                    }
-                                );
-                            }
-
+                            content.start({root: domContent, inner: ['ccm.load', element]}, function (instance) {
+                                    console.log(instance);
+                                }
+                            );
                         }
                     }
                 });
