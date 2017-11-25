@@ -1,7 +1,6 @@
 (function () {
     'use strict';
     var cacheName = 'SE1PWA';
-    var dataCacheName = 'v1';
 
     var filesToCache = [
         './',
@@ -12,10 +11,10 @@
         'http://kaul.inf.h-brs.de/data/2017/se1/le01.html',
         'http://kaul.inf.h-brs.de/data/2017/se1/le02.html',
         'http://kaul.inf.h-brs.de/data/2017/se1/le03.html',
-         'http://kaul.inf.h-brs.de/data/2017/se1/le04.html',
-         'http://kaul.inf.h-brs.de/data/2017/se1/le05.html',
-         'http://kaul.inf.h-brs.de/data/2017/se1/le06.html',
-         'http://kaul.inf.h-brs.de/data/2017/se1/le07.html',
+        'http://kaul.inf.h-brs.de/data/2017/se1/le04.html',
+        'http://kaul.inf.h-brs.de/data/2017/se1/le05.html',
+        'http://kaul.inf.h-brs.de/data/2017/se1/le06.html',
+        'http://kaul.inf.h-brs.de/data/2017/se1/le07.html',
         /*'http://kaul.inf.h-brs.de/data/2017/se1/le08.html',
         'http://kaul.inf.h-brs.de/data/2017/se1/le09.html',
         'http://kaul.inf.h-brs.de/data/2017/se1/le10.html',
@@ -67,8 +66,9 @@
         e.waitUntil(
             caches.keys().then(function (keyList) {
                 return Promise.all(keyList.map(function (key) {
-                    if (key !== cacheName && key !== dataCacheName) {
+                    if (key !== cacheName ) {
                         console.log('[ServiceWorker] Removing old cache', key);
+                        self.postMessage('[ServiceWorker] Removing old cache', key);
                         return caches.delete(key);
                     }
                 }));
