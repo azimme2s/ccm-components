@@ -1,0 +1,12 @@
+.header{position:fixed;display:flex;flex-direction:row;align-items:center;justify-content:space-between;width:100%;height:70px;top:0;left:0;background-color:#f98722;box-shadow:2px 0 7px rgba(0,0,0,0.5)}
+.text-container{flex:2 0 0;text-align:center;color:white;font-size:1.5em;font-family:sans-serif}
+.button-container{flex:1 0 0}.spacer{flex:1 0 0}.sidebar-header{width:100%;background-color:#f98722}
+.sidebar-header>div{clear:right;width:100%;text-align:center;color:white;font-size:1.5em;padding:20px 0 10px 0}
+.sidebar{position:fixed;z-index:1;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden;font-family:sans-serif;background-color:rgba(0,0,0,0.4);opacity:0;will-change:opacity;transition:opacity 200ms}
+.sidebar-container{position:relative;z-index:2;width:90%;max-width:400px;height:100%;background-color:white;box-shadow:2px 0 7px rgba(0,0,0,0.5);will-change:transform;transform:translateX(-102%)}
+.sidebar-container-animatable{transition:transform 200ms}.visible.sidebar{pointer-events:auto;opacity:1}
+.visible .sidebar-container{transform:none}.button-close{background-color:white;width:50px;height:50px;margin:10px;border:0;float:right;font-weight:bold}
+.button-open{background-color:white;width:50px;height:50px;margin:10px;border:0;font-weight:bold}
+.button-close:hover,.button-open:hover{outline:0;opacity:.8}ul{list-style-type:none;margin:0;padding:0}
+li{background-color:#f98722;color:white;margin-top:4px;padding-left:20px;height:50px;line-height:50px;font-size:1.3em}
+li:hover{opacity:.8}
