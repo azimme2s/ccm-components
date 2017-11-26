@@ -29,18 +29,18 @@
         name: 'se1-menu',
         ccm: 'https://akless.github.io/ccm/ccm.js',
         config: {
-            html: {
-                main: {
-                    inner: [
-                        {tag: 'div', class: 'nav'},
-                        {tag: 'div', class: 'content'}
+            'html': {
+                'main': {
+                    'inner': [
+                        {'tag': 'div', 'class': 'nav'},
+                        {'tag': 'div', 'class': 'content'}
                     ]
                 }
             },
-            navhamburger: ['ccm.component', './ccm.nav-hamburger.js'],
-            content: ['ccm.component', 'https://akless.github.io/ccm-components/content/versions/ccm.content-2.0.0.min.js'],
-            css: ['ccm.load', '//kaul.inf.h-brs.de/data/ccm/exercise/resources/default.css'],
-            inner: []
+            'navhamburger': ['ccm.component', './ccm.nav-hamburger.js'],
+            'content': ['ccm.component', 'https://akless.github.io/ccm-components/content/versions/ccm.content-2.0.0.min.js'],
+            'css': ['ccm.load', '//kaul.inf.h-brs.de/data/ccm/exercise/resources/default.css'],
+            'inner': []
         },
         Instance: function () {
             this.start = function (callback) {
@@ -81,7 +81,7 @@
     var f = "ccm." + component.name + (component.version ? "-" + component.version.join(".") : "") + ".js";
     if (window.ccm && null === window.ccm.files[f]) window.ccm.files[f] = component; else {
         var n = window.ccm && window.ccm.components[component.name];
-        n && n.ccm && (component.ccm = n.ccm), "string" == typeof component.ccm && (component.ccm = {url: component.ccm});
+        n && n.ccm && (component.ccm = n.ccm), "string" === typeof component.ccm && (component.ccm = {url: component.ccm});
         var v = component.ccm.url.split("/").pop().split("-");
         if (v.length > 1 ? (v = v[1].split("."), v.pop(), "min" === v[v.length - 1] && v.pop(), v = v.join(".")) : v = "latest", window.ccm && window.ccm[v]) p(); else {
             var e = document.createElement("script");
