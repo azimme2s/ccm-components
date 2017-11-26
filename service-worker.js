@@ -1,1 +1,97 @@
-!function(){"use strict";let e="SE1PWA",t=["./","./ccm.se1-menu.js","./ccm.nav-hamburger.js","./resources/style.css","https://kaul.inf.h-brs.de/data/2017/se1/le00.html","https://kaul.inf.h-brs.de/data/2017/se1/le01.html","https://kaul.inf.h-brs.de/data/2017/se1/le02.html","https://kaul.inf.h-brs.de/data/2017/se1/le03.html","https://kaul.inf.h-brs.de/data/2017/se1/le04.html","https://kaul.inf.h-brs.de/data/2017/se1/le05.html","https://kaul.inf.h-brs.de/data/2017/se1/le06.html","https://kaul.inf.h-brs.de/data/2017/se1/le07.html","https://kaul.inf.h-brs.de/data/ccm/form/ccm.form.js","https://kaul.inf.h-brs.de/data/ccm/upload/ccm.upload.js","https://kaul.inf.h-brs.de/data/ccm/highlight/ccm.highlight.js","https://kaul.inf.h-brs.de/data/ccm/show_solutions/ccm.show_solutions.js","https://kaul.inf.h-brs.de/data/ccm/exercise/ccm.exercise.js","https://kaul.inf.h-brs.de/data/ccm/form/resources/default.css","https://akless.github.io/ccm-components/user/versions/ccm.user-2.0.0.min.js","https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js","https://akless.github.io/ccm-components/content/versions/ccm.content-2.0.0.min.js","https://akless.github.io/ccm/ccm.js","https://kaul.inf.h-brs.de/data/2017/se1/json/log_configs.js","https://akless.github.io/ccm-components/libs/md5/md5.min.js"];self.addEventListener("fetch",function(t){t.respondWith(caches.match(t.request).then(function(s){return s?(console.log("[fetch] Returning from ServiceWorker cache: ",t.request.url),function(t){return caches.open(e).then(function(e){return e.match(t).then(function(e){return e||Promise.reject("no-match")})})}(t.request)):(console.log("[fetch] Returning from server: ",t.request.url),function(e,t){return new Promise(function(s,c){var n=setTimeout(c,t);fetch(e).then(function(e){clearTimeout(n),s(e)},c)})}(t.request,200))}))}),self.addEventListener("install",function(s){console.log("[ServiceWorker] Install"),s.waitUntil(caches.open(e).then(function(e){return console.log("[ServiceWorker] Caching app shell"),e.addAll(t)}))}),self.addEventListener("activate",function(t){return console.log("[ServiceWorker] Activate"),t.waitUntil(caches.keys().then(function(t){return Promise.all(t.map(function(t){if(t!==e)return console.log("[ServiceWorker] Removing old cache",t),self.postMessage("[ServiceWorker] Removing old cache",t),caches.delete(t)}))})),self.clients.claim()})}();
+(function () {
+    'use strict';
+    let cacheName = 'SE1PWA';
+
+    let filesToCache = [
+        './',
+        './ccm.se1-menu.js',
+        './ccm.nav-hamburger.js',
+        './resources/style.css',
+        'https://kaul.inf.h-brs.de/data/2017/se1/le00.html',
+        'https://kaul.inf.h-brs.de/data/2017/se1/le01.html',
+        'https://kaul.inf.h-brs.de/data/2017/se1/le02.html',
+        'https://kaul.inf.h-brs.de/data/2017/se1/le03.html',
+        'https://kaul.inf.h-brs.de/data/2017/se1/le04.html',
+        'https://kaul.inf.h-brs.de/data/2017/se1/le05.html',
+        'https://kaul.inf.h-brs.de/data/2017/se1/le06.html',
+        'https://kaul.inf.h-brs.de/data/2017/se1/le07.html',
+        /*'http://kaul.inf.h-brs.de/data/2017/se1/le08.html',
+        'http://kaul.inf.h-brs.de/data/2017/se1/le09.html',
+        'http://kaul.inf.h-brs.de/data/2017/se1/le10.html',
+        'http://kaul.inf.h-brs.de/data/2017/se1/le11.html',
+        'http://kaul.inf.h-brs.de/data/2017/se1/le12.html',
+        'http://kaul.inf.h-brs.de/data/2017/se1/le13.html',*/
+        'https://kaul.inf.h-brs.de/data/ccm/form/ccm.form.js',
+        'https://kaul.inf.h-brs.de/data/ccm/upload/ccm.upload.js',
+        'https://kaul.inf.h-brs.de/data/ccm/highlight/ccm.highlight.js',
+        'https://kaul.inf.h-brs.de/data/ccm/show_solutions/ccm.show_solutions.js',
+        'https://kaul.inf.h-brs.de/data/ccm/exercise/ccm.exercise.js',
+        'https://kaul.inf.h-brs.de/data/ccm/form/resources/default.css',
+        'https://akless.github.io/ccm-components/user/versions/ccm.user-2.0.0.min.js',
+        'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js',
+        'https://akless.github.io/ccm-components/content/versions/ccm.content-2.0.0.min.js',
+        'https://akless.github.io/ccm/ccm.js',
+        'https://kaul.inf.h-brs.de/data/2017/se1/json/log_configs.js',
+        'https://akless.github.io/ccm-components/libs/md5/md5.min.js'
+    ];
+    self.addEventListener('fetch', function (event) {
+        event.respondWith(
+            caches.match(event.request)
+                .then(function (response) {
+                        if (response) {
+                            console.log(
+                                '[fetch] Returning from ServiceWorker cache: ',
+                                event.request.url
+                            );
+                            return fromCache(event.request);
+                        }
+                        console.log('[fetch] Returning from server: ', event.request.url);
+                        return fromNetwork(event.request, 200);
+                    }
+                )
+        );
+    });
+
+    self.addEventListener('install', function (e) {
+        console.log('[ServiceWorker] Install');
+        e.waitUntil(
+            caches.open(cacheName).then(function (cache) {
+                console.log('[ServiceWorker] Caching app shell');
+                return cache.addAll(filesToCache);
+            })
+        );
+    });
+    self.addEventListener('activate', function (e) {
+        console.log('[ServiceWorker] Activate');
+        e.waitUntil(
+            caches.keys().then(function (keyList) {
+                return Promise.all(keyList.map(function (key) {
+                    if (key !== cacheName ) {
+                        console.log('[ServiceWorker] Removing old cache', key);
+                        self.postMessage('[ServiceWorker] Removing old cache', key);
+                        return caches.delete(key);
+                    }
+                }));
+            })
+        );
+        return self.clients.claim();
+    });
+
+    function fromNetwork(request, timeout) {
+        return new Promise(function (fulfill, reject) {
+            var timeoutId = setTimeout(reject, timeout);
+            fetch(request).then(function (response) {
+                clearTimeout(timeoutId);
+                fulfill(response);
+            }, reject);
+        });
+    }
+
+    function fromCache(request) {
+        return caches.open(cacheName).then(function (cache) {
+            return cache.match(request).then(function (matching) {
+                return matching || Promise.reject('no-match');
+            });
+        });
+    }
+}());
