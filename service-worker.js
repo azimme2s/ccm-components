@@ -4,9 +4,9 @@
 
     let filesToCache = [
         '/',
-        '/ccm.se1-menu.js',
-        '/ccm.nav-hamburger.js',
-        '/resources/style.css',
+        'ccm.se1-menu.js',
+        'ccm.nav-hamburger.js',
+        'style.css',
         'https://kaul.inf.h-brs.de/data/2017/se1/le00.html',
         'https://kaul.inf.h-brs.de/data/2017/se1/le01.html',
         'https://kaul.inf.h-brs.de/data/2017/se1/le02.html',
