@@ -3,7 +3,6 @@
     let cacheName = 'SE1PWA';
 
     let filesToCache = [
-        '/',
         'ccm.se1-menu.js',
         'ccm.nav-hamburger.js',
         'style.css',
