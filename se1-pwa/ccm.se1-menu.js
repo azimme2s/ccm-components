@@ -39,7 +39,7 @@
             },
             'navhamburger': ['ccm.component', 'ccm.nav-hamburger.js'],
             'content': ['ccm.component', 'https://akless.github.io/ccm-components/content/versions/ccm.content-2.0.0.min.js'],
-            'css': ['ccm.load', '//kaul.inf.h-brs.de/data/ccm/exercise/resources/default.css'],
+            'css': ['ccm.load', 'style.css'],
             'inner': []
         },
         Instance: function () {

@@ -154,3 +154,6 @@ li {
 li:hover {  
     opacity: 0.8;
 }
+.content {
+    margin-top: 70px;
+}
