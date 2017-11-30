@@ -3,9 +3,10 @@
     let cacheName = 'SE1PWA';
 
     let filesToCache = [
-        '/ccm.se1-menu.js',
-        '/ccm.nav-hamburger.js',
-        '/style.css',
+        'ccm.se1-menu.js',
+        'ccm.nav-hamburger.js',
+        'style.css',
+        '../sw-notification/ccm.sw-notification.js',
         'https://kaul.inf.h-brs.de/data/2017/se1/le00.html',
         'https://kaul.inf.h-brs.de/data/2017/se1/le01.html',
         'https://kaul.inf.h-brs.de/data/2017/se1/le02.html',
@@ -49,6 +50,7 @@
                     }
                 )
         );
+        event.waitUntil(update(event.request, event));
     });
 
     self.addEventListener('install', function (e) {
@@ -65,9 +67,8 @@
         e.waitUntil(
             caches.keys().then(function (keyList) {
                 return Promise.all(keyList.map(function (key) {
-                    if (key !== cacheName ) {
+                    if (key !== cacheName) {
                         console.log('[ServiceWorker] Removing old cache', key);
-                        self.postMessage('[ServiceWorker] Removing old cache', key);
                         return caches.delete(key);
                     }
                 }));
@@ -75,7 +76,23 @@
         );
         return self.clients.claim();
     });
+    function sendPostMessage(event, msg){
+        // Exit early if we don't have access to the client.
+        // Eg, if it's cross-origin.
+        if (!event.clientId) return;
 
+        // Get the client.
+        const client = clients.get(event.clientId);
+        // Exit early if we don't get the client.
+        // Eg, if it closed.
+        if (!client) return;
+
+        // Send a message to the client.
+        client.postMessage({
+            msg: msg,
+            url: event.request.url
+        });
+    }
     function fromNetwork(request, timeout) {
         return new Promise(function (fulfill, reject) {
             var timeoutId = setTimeout(reject, timeout);
@@ -90,6 +107,15 @@
         return caches.open(cacheName).then(function (cache) {
             return cache.match(request).then(function (matching) {
                 return matching || Promise.reject('no-match');
+            });
+        });
+    }
+
+    function update(request, e) {
+        return caches.open(cacheName).then(function (cache) {
+            return fetch(request).then(function (response) {
+                sendPostMessage(e, 'Daten haben sich aktualisiert!');
+                return cache.put(request, response);
             });
         });
     }
