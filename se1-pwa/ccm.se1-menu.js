@@ -37,23 +37,35 @@
                     ]
                 }
             },
+            'root_node': ['ccm.load','https://moritzkemp.github.io/ccm-route_node/ccm.route_node.js'],
             'navhamburger': ['ccm.component', 'ccm.nav-hamburger.js'],
             'content': ['ccm.component', 'https://akless.github.io/ccm-components/content/versions/ccm.content-2.0.0.min.js'],
             'css': ['ccm.load', 'style.css'],
             'inner': []
         },
         Instance: function () {
+            let self = this;
+            let my;
+
+            this.ready = function (callback) {
+                my = self.ccm.helper.privatize(self);
+                if (callback) callback();
+            };
             this.start = function (callback) {
-                var main_elem = this.ccm.helper.html(this.html.main);
-                this.element.appendChild(main_elem);
-                this.buildNav();
+                var main_elem = self.ccm.helper.html(my.html.main);
+                self.element.appendChild(main_elem);
+                self.ccm.start(my.root_node, {'isRoot': true,'patterns':['/home']}, instance => {
+                    self.nav_tabs = instance;
+                    instance.addObserver();
+                });
+                self.buildNav();
                 if (callback) callback();
             };
             this.buildNav = function () {
-                var content = this.content;
+                var content = my.content;
                 var leCounter = 0;
-                var domContent = this.element.querySelector('.content');
-                var navInner = this.inner.map(function (element) {
+                var domContent = self.element.querySelector('.content');
+                var navInner = my.inner.map(function (element) {
                     leCounter++;
                     return {
                         'text': 'Software Engineering LE ' + leCounter,
@@ -66,8 +78,8 @@
                     }
                 });
 
-                this.ccm.start(this.navhamburger, {
-                    root: this.element.querySelector('.nav'),
+                this.ccm.start(my.navhamburger, {
+                    root: self.element.querySelector('.nav'),
                     "section": navInner
                 });
             }

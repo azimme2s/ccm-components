@@ -38,6 +38,9 @@
         event.respondWith(
             caches.match(event.request)
                 .then(function (response) {
+                        if(/https:\/\/kaul.inf.h-brs.de\/login\/login.php.*/.test(event.request.url.href)){
+                            return;
+                        }
                         if (response) {
                             console.log(
                                 '[fetch] Returning from ServiceWorker cache: ',
@@ -50,7 +53,7 @@
                     }
                 )
         );
-        event.waitUntil(update(event.request, event));
+        event.waitUntil(update(event.request));
     });
 
     self.addEventListener('install', function (e) {
@@ -69,6 +72,7 @@
                 return Promise.all(keyList.map(function (key) {
                     if (key !== cacheName) {
                         console.log('[ServiceWorker] Removing old cache', key);
+                        sendPostMessage(e,"Alter Cache wird gelöscht!");
                         return caches.delete(key);
                     }
                 }));
@@ -111,10 +115,9 @@
         });
     }
 
-    function update(request, e) {
+    function update(request) {
         return caches.open(cacheName).then(function (cache) {
             return fetch(request).then(function (response) {
-                sendPostMessage(e, 'Daten haben sich aktualisiert!');
                 return cache.put(request, response);
             });
         });
