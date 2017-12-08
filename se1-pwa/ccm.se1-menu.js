@@ -46,34 +46,60 @@
         Instance: function () {
             let self = this;
             let my;
+            let route_1 = {};
+            let route_2 = {};
 
             this.ready = function (callback) {
                 my = self.ccm.helper.privatize(self);
                 if (callback) callback();
             };
             this.start = function (callback) {
+
+
                 var main_elem = self.ccm.helper.html(my.html.main);
                 self.element.appendChild(main_elem);
-                self.ccm.start(my.root_node, {'isRoot': true,'patterns':['/home']}, instance => {
-                    self.nav_tabs = instance;
-                    instance.addObserver();
-                });
                 self.buildNav();
+                self.ccm.start(my.root_node, {
+                    "isRoot": true,
+                    "observer" : [
+                        (route)=>{
+                            console.log("[Route 1 Observer] ", route);
+                        }
+                    ]
+                }, function(instance){
+                    route_1 = instance;
+                    ccm.start(my.root_node, {
+                        "patterns": subnodeArray,
+                        "prevNode": {"route": "", "node":route_1},
+                        "observer" : [
+                            (route)=>{
+                                console.log("[Route 2 Observer] ", route);
+                            }
+                        ]
+
+                    }, instance_1 =>{
+                        route_2 = instance_1;
+                    })
+                });
                 if (callback) callback();
             };
+            let subnodeArray = [];
             this.buildNav = function () {
                 var content = my.content;
                 var leCounter = 0;
                 var domContent = self.element.querySelector('.content');
                 var navInner = my.inner.map(function (element) {
                     leCounter++;
+                    subnodeArray.push("/le"+leCounter);
                     return {
                         'text': 'Software Engineering LE ' + leCounter,
+                        'id': 'le'+leCounter,
                         'action': function () {
                             content.start({root: domContent, inner: ['ccm.load', element]}, function (instance) {
                                     console.log(instance);
                                 }
                             );
+                            route_2.navigatedTo('/'+this.id);
                         }
                     }
                 });

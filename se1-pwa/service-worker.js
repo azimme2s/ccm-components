@@ -35,12 +35,12 @@
         'https://akless.github.io/ccm-components/libs/md5/md5.min.js'
     ];
     self.addEventListener('fetch', function (event) {
+        if(/https:\/\/kaul.inf.h-brs.de\/login\/login.php.*/.test(event.request.url.href)){
+            return;
+        }
         event.respondWith(
             caches.match(event.request)
                 .then(function (response) {
-                        if(/https:\/\/kaul.inf.h-brs.de\/login\/login.php.*/.test(event.request.url.href)){
-                            return;
-                        }
                         if (response) {
                             console.log(
                                 '[fetch] Returning from ServiceWorker cache: ',

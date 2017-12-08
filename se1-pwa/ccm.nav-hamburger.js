@@ -153,6 +153,7 @@
                     listItem.appendChild(textEl);
                     listItem.addEventListener( 'click', this.onSectionClick );
                     listItem.action = my.section[i].action;
+                    listItem.id = my.section[i].id;
                     list.appendChild(listItem);
                 }
                 
