@@ -41,6 +41,7 @@
             'navhamburger': ['ccm.component', 'ccm.nav-hamburger.js'],
             'content': ['ccm.component', 'https://akless.github.io/ccm-components/content/versions/ccm.content-2.0.0.min.js'],
             'css': ['ccm.load', 'style.css'],
+            'feedback': ['ccm.component', 'ccm.feedback.js'],
             'inner': []
         },
         Instance: function () {
@@ -103,11 +104,20 @@
                         }
                     }
                 });
-
+                let nav = self.element.querySelector('.nav');
                 this.ccm.start(my.navhamburger, {
-                    root: self.element.querySelector('.nav'),
+                    root: nav,
                     "section": navInner
                 });
+
+               /*this.ccm.start(my.feedback,{
+                    root: nav,
+                    position: 'right',
+                    key: ["ccm.get","resources/configs.js","local"],
+                    function(instance){
+
+                    }
+                });*/
             }
         }
     };
