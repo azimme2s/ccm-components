@@ -18,7 +18,7 @@
           "inner": [
             {
               "tag": "img",
-              "src": "resources/feedback.png",
+              "src": "feedback.png",
               "alt": "feedback"
             },
             {
@@ -82,8 +82,8 @@
 
       //onfinish: { log: true },
       data: { store: [ 'ccm.store' ] },
-      left_css: 'resources/left.css',
-      right_css: 'resources/right.css',
+      left_css: 'left.css',
+      right_css: 'right.css',
       css: [ 'ccm.load',
         { context: 'head', url: 'http://tkless.github.io/ccm-components/lib/bootstrap/css/font-face.css' },
         'http://tkless.github.io/ccm-components/lib/bootstrap/css/bootstrap.css'
