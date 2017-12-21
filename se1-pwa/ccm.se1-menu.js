@@ -44,7 +44,6 @@
             'navhamburger': ['ccm.component', 'ccm.nav-hamburger.js'],
             'content': ['ccm.component', 'https://akless.github.io/ccm-components/content/versions/ccm.content-2.0.0.min.js'],
             'css': ['ccm.load', 'style.css'],
-            'user' : ["ccm.load", "https://akless.github.io/ccm-components/user/ccm.user.min.js"],
             'feedback': ['ccm.component', 'ccm.feedback.js'],
             'news_feed': [
                 'ccm.load',
@@ -117,24 +116,19 @@
                         'id': 'newsfeed',
                         'action': function () {
                             self.ccm.start(
-                                my.user,
+                                my.news_feed,
                                 {
-                                    'root': self.element.querySelector('.login'),
-                                    "sign_on": "guest"
-                                }, function(user){
-                                   self.ccm.start(
-                                        my.news_feed,
-                                        {
-                                            "root" : self.element.querySelector('.newsfeed'),
-                                            //"user": my.user,
-                                            "enableOffline": "false",
-                                            "storeConfig":{
-                                                "store":"SE1_news_feed",
-                                                "url":"https://ccm.inf.h-brs.de"
-                                            }
-                                        }
-                                    );
-                                });
+                                    "root" : self.element.querySelector('.newsfeed'),
+                                    "user": ["ccm.instance", "https://akless.github.io/ccm-components/user/ccm.user.min.js", {
+                                        'root': self.element.querySelector('.login'),
+                                        "sign_on": "guest"
+                                    }],
+                                "enableOffline": "false",
+                                "storeConfig":{
+                                "store":"SE1_news_feed",
+                                    "url":"https://ccm.inf.h-brs.de"
+                                }
+                            });
                         }
                 });
                 let nav = self.element.querySelector('.nav');
