@@ -33,7 +33,10 @@
                 'main': {
                     'inner': [
                         {'tag': 'div', 'class': 'nav'},
-                        {'tag': 'div', 'class': 'content'}
+                        {'tag': 'div', 'class': 'content', 'inner':[
+                                {'tag': 'div', 'class': 'login'},
+                                {'tag': 'div', 'class': 'newsfeed'}
+                            ]}
                     ]
                 }
             },
@@ -41,7 +44,12 @@
             'navhamburger': ['ccm.component', 'ccm.nav-hamburger.js'],
             'content': ['ccm.component', 'https://akless.github.io/ccm-components/content/versions/ccm.content-2.0.0.min.js'],
             'css': ['ccm.load', 'style.css'],
+            'user' : ["ccm.load", "https://akless.github.io/ccm-components/user/ccm.user.min.js"],
             'feedback': ['ccm.component', 'ccm.feedback.js'],
+            'news_feed': [
+                'ccm.load',
+                'https://moritzkemp.github.io/ccm-news_feed/ccm.news_feed.min.js'
+            ],
             'inner': []
         },
         Instance: function () {
@@ -86,10 +94,10 @@
             };
             let subnodeArray = [];
             this.buildNav = function () {
-                var content = my.content;
-                var leCounter = 0;
-                var domContent = self.element.querySelector('.content');
-                var navInner = my.inner.map(function (element) {
+                let content = my.content;
+                let leCounter = 0;
+                let domContent = self.element.querySelector('.content');
+                let navInner = my.inner.map(function (element) {
                     leCounter++;
                     subnodeArray.push("/le"+leCounter);
                     return {
@@ -103,6 +111,31 @@
                             route_2.navigatedTo('/'+this.id);
                         }
                     }
+                });
+                navInner.push({
+                        'text': 'News Feed',
+                        'id': 'newsfeed',
+                        'action': function () {
+                            self.ccm.start(
+                                my.user,
+                                {
+                                    'root': self.element.querySelector('.login'),
+                                    "sign_on": "guest"
+                                }, function(user){
+                                   self.ccm.start(
+                                        my.news_feed,
+                                        {
+                                            "root" : self.element.querySelector('.newsfeed'),
+                                            //"user": my.user,
+                                            "enableOffline": "false",
+                                            "storeConfig":{
+                                                "store":"SE1_news_feed",
+                                                "url":"https://ccm.inf.h-brs.de"
+                                            }
+                                        }
+                                    );
+                                });
+                        }
                 });
                 let nav = self.element.querySelector('.nav');
                 this.ccm.start(my.navhamburger, {
