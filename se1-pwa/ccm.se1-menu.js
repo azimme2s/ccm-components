@@ -87,6 +87,16 @@
 
                     }, instance_1 =>{
                         route_2 = instance_1;
+                        ccm.start(my.root_node, {
+                            "patterns": subnodeArray,
+                            "prevNode": {"route": "", "node":route_2},
+                            "observer" : [
+                                (route)=>{
+                                    console.log("[Route 3 Observer] ", route);
+                                }
+                            ]
+
+                        })
                     })
                 });
                 if (callback) callback();
@@ -111,6 +121,7 @@
                         }
                     }
                 });
+                subnodeArray.push("/newsfeed");
                 navInner.push({
                         'text': 'News Feed',
                         'id': 'newsfeed',
@@ -121,7 +132,7 @@
                                     "root" : self.element.querySelector('.newsfeed'),
                                     "user": ["ccm.instance", "https://akless.github.io/ccm-components/user/ccm.user.min.js", {
                                         'root': self.element.querySelector('.login'),
-                                        "sign_on": "guest"
+                                        "sign_on": "hbrsinfkaul"
                                     }],
                                 "enableOffline": "false",
                                 "storeConfig":{
@@ -129,6 +140,7 @@
                                     "url":"https://ccm.inf.h-brs.de"
                                 }
                             });
+                            route_2.navigatedTo('/'+this.id);
                         }
                 });
                 let nav = self.element.querySelector('.nav');
@@ -137,14 +149,6 @@
                     "section": navInner
                 });
 
-               /*this.ccm.start(my.feedback,{
-                    root: nav,
-                    position: 'right',
-                    key: ["ccm.get","resources/configs.js","local"],
-                    function(instance){
-
-                    }
-                });*/
             }
         }
     };

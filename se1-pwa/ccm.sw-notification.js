@@ -60,7 +60,6 @@
                                             });
                                         });
                                     }
-                                    console.log("Is now offline usable!");
                                 })
                             }
                         }
@@ -76,7 +75,7 @@
                             });
                         }
                     })
-                })
+                });
                 if (callback) callback();
             };
         }

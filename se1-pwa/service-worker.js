@@ -235,7 +235,8 @@
             clients.forEach(function( client ){
                 client.postMessage(
                     {
-                        "tag": MSG_TO_PAGE_POSTS_SENT
+                        "tag": MSG_TO_PAGE_POSTS_SENT,
+                        "msg": "Post send"
                     }
                 );
             });
@@ -248,7 +249,8 @@
                 client.postMessage(
                     {
                         "tag": MSG_TO_PAGE_GOT_POSTS,
-                        "posts": posts
+                        "posts": posts,
+                        "msg": posts
                     }
                 );
             });
@@ -326,23 +328,6 @@
         });
     };
 
-    function sendPostMessage(event, msg){
-        // Exit early if we don't have access to the client.
-        // Eg, if it's cross-origin.
-        if (!event.clientId) return;
-
-        // Get the client.
-        const client = clients.get(event.clientId);
-        // Exit early if we don't get the client.
-        // Eg, if it closed.
-        if (!client) return;
-
-        // Send a message to the client.
-        client.postMessage({
-            msg: msg,
-            url: event.request.url
-        });
-    }
     function fromNetwork(request, timeout) {
         return new Promise(function (fulfill, reject) {
             var timeoutId = setTimeout(reject, timeout);
