@@ -21,47 +21,15 @@
                 .catch(function (error) {
                     console.log('Registration failed:', error);
                 });
-
-            navigator.serviceWorker.addEventListener('controllerchange', function (event) {
-                console.log(
-                    '[controllerchange] A "controllerchange" event has happened ' +
-                    'within navigator.serviceWorker: ', event
-                );
-                navigator.serviceWorker.controller.addEventListener('statechange',
-                    function () {
-                        console.log('[controllerchange][statechange] ' +
-                            'A "statechange" has occured: ', this.state
-                        );
-                        if (this.state === 'activated') {
-                            Notification.requestPermission().then(function (premission) {
-                                if (premission === "granted") {
-                                    navigator.serviceWorker.ready.then(function (registration) {
-                                        registration.showNotification("Is now offline usable!", {
-                                            vibrate: [500, 110, 500, 110, 450, 110, 200, 110, 170, 40, 450, 110, 200, 110, 170, 40, 500],
-                                        });
-                                    });
-                                }
-                                console.log("Is now offline usable!");
-                            })
-                        }
-                    }
-                );
-            });
-            navigator.serviceWorker.addEventListener('message', function(event){
-                Notification.requestPermission().then(function (premission) {
-                    if (premission === "granted") {
-                        navigator.serviceWorker.ready.then(function (registration) {
-                            registration.showNotification("Es gibt neue Daten in deinem Cache Probier sie mal aus!!", {
-                                vibrate: [500, 110, 500, 110, 450, 110, 200, 110, 170, 40, 450, 110, 200, 110, 170, 40, 500],
-                            });
-                        });
-                    }
-                })
-            })
         })();
     </script>
 </head>
+<script src="ccm.sw-notification.js"></script>
 <script src="https://akless.github.io/ccm/ccm.js"></script>
+<script src="ccm.feedback.js"></script>
 <script src="ccm.se1-menu.js"></script>
+<script src="https://moritzkemp.github.io/ccm-route_node/ccm.route_node.js"></script>
 <ccm-se1-menu
         inner='["https://kaul.inf.h-brs.de/data/2017/se1/le00.html","https://kaul.inf.h-brs.de/data/2017/se1/le01.html","https://kaul.inf.h-brs.de/data/2017/se1/le03.html"]'></ccm-se1-menu>
+<ccm-sw-notification></ccm-sw-notification>
+<ccm-feedback position="right" key='["ccm.get","configs.js"]'></ccm-feedback>
