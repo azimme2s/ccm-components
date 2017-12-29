@@ -85,8 +85,8 @@
       left_css: 'left.css',
       right_css: 'right.css',
       css: [ 'ccm.load',
-        { context: 'head', url: 'http://tkless.github.io/ccm-components/lib/bootstrap/css/font-face.css' },
-        'http://tkless.github.io/ccm-components/lib/bootstrap/css/bootstrap.css'
+        { context: 'head', url: 'https://tkless.github.io/ccm-components/lib/bootstrap/css/font-face.css' },
+        'https://tkless.github.io/ccm-components/lib/bootstrap/css/bootstrap.css'
       ],
     },
 
