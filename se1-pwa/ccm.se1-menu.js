@@ -33,10 +33,8 @@
                 'main': {
                     'inner': [
                         {'tag': 'div', 'class': 'nav'},
-                        {'tag': 'div', 'class': 'content', 'inner':[
-                                {'tag': 'div', 'class': 'login'},
-                                {'tag': 'div', 'class': 'newsfeed'}
-                            ]}
+                        {'tag': 'div', 'class': 'login'},
+                        {'tag': 'div', 'class': 'content'}
                     ]
                 }
             },
@@ -129,7 +127,7 @@
                             self.ccm.start(
                                 my.news_feed,
                                 {
-                                    "root" : self.element.querySelector('.newsfeed'),
+                                    "root" : domContent,
                                     "user": ["ccm.instance", "https://akless.github.io/ccm-components/user/ccm.user.min.js", {
                                         'root': self.element.querySelector('.login'),
                                         "sign_on": "hbrsinfkaul"

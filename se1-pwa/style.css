@@ -155,5 +155,8 @@ li:hover {
     opacity: 0.8;
 }
 .content {
+    margin-top: 10px;
+}
+.login{
     margin-top: 75px;
 }
