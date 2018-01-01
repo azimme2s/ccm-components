@@ -1,4 +1,4 @@
-#slideout{position:absolute;bottom:0;right:0;width:35px;padding:12px 0;text-align:center;background:#f98722;transition-duration:.3s;border-radius:5px 0 0 5px}
+#slideout{position:fixed;bottom:0;right:0;width:35px;padding:12px 0;text-align:center;background:#f98722;transition-duration:.3s;border-radius:5px 0 0 5px}
 #slideout-inner{position:fixed;bottom:0;right:-250px;background:#f98722;width:250px;padding:8px 20px;height:285px;transition-duration:.3s;text-align:left;border-radius:0 0 0 5px}
 #slideout:hover{right:250px}#slideout:hover #slideout-inner{right:0}.saved{animation-name:fadeOut;animation-duration:4s;opacity:0}
 @keyframes fadeOut{0%{opacity:1}100%{opacity:0}}
