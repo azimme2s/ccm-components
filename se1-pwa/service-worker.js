@@ -1,5 +1,3 @@
-(function () {
-    'use strict';
 
     /* --- IndexedDB configs */
     const DB_NAME = "newsFeed";
@@ -21,6 +19,10 @@
         'ccm.nav-hamburger.js',
         'style.css',
         'ccm.sw-notification.js',
+        'configs.js',
+        'right.css',
+        'feedback.png',
+        'ccm.feedback.js',
         'https://kaul.inf.h-brs.de/data/2017/se1/le00.html',
         'https://kaul.inf.h-brs.de/data/2017/se1/le01.html',
         'https://kaul.inf.h-brs.de/data/2017/se1/le02.html',
@@ -35,6 +37,11 @@
         'https://kaul.inf.h-brs.de/data/2017/se1/le11.html',
         //'https://kaul.inf.h-brs.de/data/2017/se1/le12.html',
         //'https://kaul.inf.h-brs.de/data/2017/se1/le13.html',
+        'https://moritzkemp.github.io/ccm-news_feed/ccm.news_feed.min.js',
+        'https://moritzkemp.github.io/ccm-route_node/ccm.route_node.js',
+        'https://akless.github.io/ccm/version/ccm-11.5.0.min.js',
+        'https://tkless.github.io/ccm-components/lib/bootstrap/css/font-face.css',
+        'https://tkless.github.io/ccm-components/lib/bootstrap/css/bootstrap.css',
         'https://kaul.inf.h-brs.de/data/ccm/form/ccm.form.js',
         'https://kaul.inf.h-brs.de/data/ccm/upload/ccm.upload.js',
         'https://kaul.inf.h-brs.de/data/ccm/highlight/ccm.highlight.js',
@@ -63,11 +70,11 @@
                             return fromCache(event.request);
                         }
                         console.log('[fetch] Returning from server: ', event.request.url);
-                        return fromNetwork(event.request, 200);
+                        return fromNetwork(event.request, 400);
                     }
                 )
         );
-        event.waitUntil(update(event.request));
+        //event.waitUntil(update(event.request));
     });
 
     self.addEventListener('install', function (e) {
@@ -86,11 +93,12 @@
                     .then( (cacheNames) =>{
                         return Promise.all(
                             cacheNames.map( (cacheName) =>{
-                                if(CACHE_NAME !== cacheName && cacheName.startsWith("ccm-news-feed-"))
+                                if(CACHE_NAME !== cacheName && cacheName.startsWith("SE1PWA"))
                                     return caches.delete(cacheName);
                             })
                         );
                     }),
+                console.log('[ServiceWorker] is activated'),
                 openDatabase("newsFeed", "2")
             ])
         );
@@ -353,4 +361,3 @@
             });
         });
     }
-}());

@@ -83,7 +83,7 @@
                             }
                         ]
 
-                    }, instance_1 =>{
+                    }, function(instance_1){
                         route_2 = instance_1;
                         ccm.start(my.root_node, {
                             "patterns": subnodeArray,
@@ -104,6 +104,7 @@
                 let content = my.content;
                 let leCounter = 0;
                 let domContent = self.element.querySelector('.content');
+                let login = self.element.querySelector('.login');
                 let navInner = my.inner.map(function (element) {
                     leCounter++;
                     subnodeArray.push("/le"+leCounter);
@@ -111,6 +112,9 @@
                         'text': 'Software Engineering LE ' + leCounter,
                         'id': 'le'+leCounter,
                         'action': function () {
+                            while (login.hasChildNodes()) {
+                                login.removeChild(login.firstChild);
+                            }
                             content.start({root: domContent, inner: ['ccm.load', element]}, function (instance) {
                                     console.log(instance);
                                 }
@@ -119,7 +123,6 @@
                         }
                     }
                 });
-                subnodeArray.push("/newsfeed");
                 navInner.push({
                         'text': 'News Feed',
                         'id': 'newsfeed',
@@ -141,6 +144,7 @@
                             route_2.navigatedTo('/'+this.id);
                         }
                 });
+                subnodeArray.push("/newsfeed");
                 let nav = self.element.querySelector('.nav');
                 this.ccm.start(my.navhamburger, {
                     root: nav,
