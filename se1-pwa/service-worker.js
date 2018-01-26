@@ -38,7 +38,6 @@
         'https://kaul.inf.h-brs.de/data/2017/se1/le11.html',
         'https://kaul.inf.h-brs.de/data/2017/se1/le12.html',
         'https://kaul.inf.h-brs.de/data/2017/se1/le13.html',
-        'https://moritzkemp.github.io/ccm-route_node/ccm.route_node.js',
         'https://akless.github.io/ccm/version/ccm-11.5.0.min.js',
         'https://tkless.github.io/ccm-components/lib/bootstrap/css/font-face.css',
         'https://tkless.github.io/ccm-components/lib/bootstrap/css/bootstrap.css',

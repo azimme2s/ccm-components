@@ -38,7 +38,6 @@
                     ]
                 }
             },
-            'root_node': ['ccm.load', 'https://moritzkemp.github.io/ccm-route_node/ccm.route_node.js'],
             'navhamburger': ['ccm.component', 'ccm.nav-hamburger.js'],
             'content': ['ccm.component', 'https://akless.github.io/ccm-components/content/versions/ccm.content-2.0.0.min.js'],
             'css': ['ccm.load', 'style.css'],
@@ -95,32 +94,6 @@
                         }
                     );
                 }
-
-
-                self.ccm.start("https://moritzkemp.github.io/ccm-route_node/ccm.route_node.js", {
-                    "isRoot": true,
-                    "patterns": [""],
-                    "observer": [
-                        (route) => {
-                            console.log("[Route 1 Observer] ", route);
-                        }
-                    ]
-                }, function (instance) {
-                    route_1 = instance;
-                    console.log(my.subnodeArray);
-                    self.ccm.start("https://moritzkemp.github.io/ccm-route_node/ccm.route_node.js", {
-                        "patterns": my.subnodeArray,
-                        "prevNode": {"route": "", "node": route_1},
-                        "observer": [
-                            (route) => {
-                                console.log("[Route 2 Observer] ", route);
-                            }
-                        ]
-
-                    })
-                }, function (instance_1) {
-                    console.log(instance_1);
-                });
                 if (callback) callback();
             };
 
@@ -141,7 +114,7 @@
                                     console.log(instance);
                                 }
                             );
-                            route_1.navigatedTo('/' + element[0]);
+                            window.location.hash = '/' + element[0];
                         }
                     }
                 });
@@ -163,7 +136,7 @@
                                     "url": "https://ccm.inf.h-brs.de"
                                 }
                             });
-                        route_1.navigatedTo('/' + this.id);
+                        window.location.hash = '/' + this.id;
                     }
                 });
                 my.subnodeArray.push("/newsfeed");
