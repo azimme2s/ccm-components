@@ -160,3 +160,131 @@ li:hover {
 .login{
     margin-top: 75px;
 }
+.new-post-form {
+    display: flex;
+    height: 100px;
+    flex-direction: row;
+    align-items: center;
+}
+
+.new-post-input {
+    flex: 3 0 0;
+    margin-right: 10px;
+}
+
+.new-post-submit {
+    flex: 1 0 0;
+    border: none;
+    background-color: hsl(0, 0%, 90%);
+    border-radius: 30px;
+    height: 60px;
+    border: 2px solid  hsl(0, 0%, 90%);
+    max-width: 200px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.new-post-submit:disabled {
+    color: hsl(0, 0%, 100%);
+}
+
+.new-post-title, .new-post-text {
+    width: 100%;
+    padding: 0;
+    margin: 0 0 3px 0;
+    border: 2px solid grey;
+    box-sizing: border-box;
+    padding: 5px;
+    font-size: 1em;
+    font-family: sans-serif;
+}
+
+
+.new-post-text {
+    resize: none;
+}
+
+/* --- Post styling --- */
+
+.close {
+    font-size: 1.2em;
+    cursor: pointer;
+    color: #84a266;
+}
+
+.post {
+    display: flex;
+    flex-direction: column;
+    font-family: sans-Serif;
+}
+
+.head {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-bottom: 0.5em;
+}
+
+.title {
+    flex: 4;
+    font-weight: bold;
+    font-size: 110%;
+}
+
+.name,
+.date {
+    font-size: 70%;
+    color: #909090;
+}
+
+.user {
+    flex: 2;
+    margin-right: 0.5em;
+}
+
+.post {
+    margin: 0.5em 0 0.5em;
+    padding: 0.7em;
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 3px;
+    box-shadow: 0 0 3px #84a266;
+}
+
+.user > .fa {
+    font-size: 2.5em;
+    padding: 0.1em 0 0.1em 0;
+    color: #84a266;
+}
+
+.post-area button {
+    background: none repeat scroll 0 0 #85a366;
+    border: 1px solid #556740;
+    border-radius: 3px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 1px 1px rgba(100, 100, 100, 0.3);
+    color: white;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0.6em 0.8em;
+    text-align: center;
+    transition: background 0.15s ease 0s, color 0.15s ease 0s;
+}
+
+.status-indicator {
+    flex: 1;
+    align-self: center;
+}
+
+.waiting {
+    width: 10px;
+    height: 10px;
+    border-radius: 15px;
+    border: 3px solid grey;
+    border-top: 3px solid black;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin{
+    0%{ transform: rotate(0deg); }
+    100%{ transform: rotate(360deg); }
+}

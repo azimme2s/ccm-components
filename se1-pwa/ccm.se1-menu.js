@@ -38,119 +38,154 @@
                     ]
                 }
             },
-            'root_node': ['ccm.load','https://moritzkemp.github.io/ccm-route_node/ccm.route_node.js'],
+            'root_node': ['ccm.load', 'https://moritzkemp.github.io/ccm-route_node/ccm.route_node.js'],
             'navhamburger': ['ccm.component', 'ccm.nav-hamburger.js'],
             'content': ['ccm.component', 'https://akless.github.io/ccm-components/content/versions/ccm.content-2.0.0.min.js'],
             'css': ['ccm.load', 'style.css'],
             'feedback': ['ccm.component', 'ccm.feedback.js'],
             'news_feed': [
                 'ccm.load',
-                'https://moritzkemp.github.io/ccm-news_feed/ccm.news_feed.min.js'
+                'ccm.news_feed.js'
             ],
-            'inner': []
+            'inner': [],
+            'subnodeArray': []
         },
         Instance: function () {
             let self = this;
             let my;
             let route_1 = {};
-            let route_2 = {};
 
             this.ready = function (callback) {
                 my = self.ccm.helper.privatize(self);
                 if (callback) callback();
             };
             this.start = function (callback) {
-
-
-                var main_elem = self.ccm.helper.html(my.html.main);
+                let main_elem = self.ccm.helper.html(my.html.main);
                 self.element.appendChild(main_elem);
+                let content = my.content;
+                let domContent = self.element.querySelector('.content');
+                let login = self.element.querySelector('.login');
+
                 self.buildNav();
-                self.ccm.start(my.root_node, {
+
+
+                while (login.hasChildNodes()) {
+                    login.removeChild(login.firstChild);
+                }
+                let route = self.getUrlRoutes(window.location.href);
+                if (route === "newsfeed") {
+                    self.ccm.start(
+                        my.news_feed,
+                        {
+                            "root": domContent,
+                            "user": ["ccm.instance", "https://akless.github.io/ccm-components/user/ccm.user.min.js", {
+                                'root': self.element.querySelector('.login'),
+                                "sign_on": "hbrsinfkaul"
+                            }],
+                            "enableOffline": "false",
+                            "storeConfig": {
+                                "store": "SE1_news_feed",
+                                "url": "https://ccm.inf.h-brs.de"
+                            }
+                        });
+                } else {
+                    let htmlContent = self.getHTMLContent(my.inner, route);
+                    content.start({root: domContent, inner: ['ccm.load', htmlContent]}, function (instance) {
+                            console.log(instance);
+                        }
+                    );
+                }
+
+
+                self.ccm.start("https://moritzkemp.github.io/ccm-route_node/ccm.route_node.js", {
                     "isRoot": true,
-                    "observer" : [
-                        (route)=>{
+                    "patterns": [""],
+                    "observer": [
+                        (route) => {
                             console.log("[Route 1 Observer] ", route);
                         }
                     ]
-                }, function(instance){
+                }, function (instance) {
                     route_1 = instance;
-                    ccm.start(my.root_node, {
-                        "patterns": subnodeArray,
-                        "prevNode": {"route": "", "node":route_1},
-                        "observer" : [
-                            (route)=>{
+                    console.log(my.subnodeArray);
+                    self.ccm.start("https://moritzkemp.github.io/ccm-route_node/ccm.route_node.js", {
+                        "patterns": my.subnodeArray,
+                        "prevNode": {"route": "", "node": route_1},
+                        "observer": [
+                            (route) => {
                                 console.log("[Route 2 Observer] ", route);
                             }
                         ]
 
-                    }, function(instance_1){
-                        route_2 = instance_1;
-                        ccm.start(my.root_node, {
-                            "patterns": subnodeArray,
-                            "prevNode": {"route": "", "node":route_2},
-                            "observer" : [
-                                (route)=>{
-                                    console.log("[Route 3 Observer] ", route);
-                                }
-                            ]
-
-                        })
                     })
+                }, function (instance_1) {
+                    console.log(instance_1);
                 });
                 if (callback) callback();
             };
-            let subnodeArray = [];
+
             this.buildNav = function () {
                 let content = my.content;
-                let leCounter = 0;
                 let domContent = self.element.querySelector('.content');
                 let login = self.element.querySelector('.login');
                 let navInner = my.inner.map(function (element) {
-                    leCounter++;
-                    subnodeArray.push("/le"+leCounter);
+                    my.subnodeArray.push(element[0]);
                     return {
-                        'text': 'Software Engineering LE ' + leCounter,
-                        'id': 'le'+leCounter,
+                        'text': 'Software Engineering LE ' + element[0],
+                        'id': element[0],
                         'action': function () {
                             while (login.hasChildNodes()) {
                                 login.removeChild(login.firstChild);
                             }
-                            content.start({root: domContent, inner: ['ccm.load', element]}, function (instance) {
+                            content.start({root: domContent, inner: ['ccm.load', element[1]]}, function (instance) {
                                     console.log(instance);
                                 }
                             );
-                            route_2.navigatedTo('/'+this.id);
+                            route_1.navigatedTo('/' + element[0]);
                         }
                     }
                 });
                 navInner.push({
-                        'text': 'News Feed',
-                        'id': 'newsfeed',
-                        'action': function () {
-                            self.ccm.start(
-                                my.news_feed,
-                                {
-                                    "root" : domContent,
-                                    "user": ["ccm.instance", "https://akless.github.io/ccm-components/user/ccm.user.min.js", {
-                                        'root': self.element.querySelector('.login'),
-                                        "sign_on": "hbrsinfkaul"
-                                    }],
+                    'text': 'News Feed',
+                    'id': 'newsfeed',
+                    'action': function () {
+                        self.ccm.start(
+                            my.news_feed,
+                            {
+                                "root": domContent,
+                                "user": ["ccm.instance", "https://akless.github.io/ccm-components/user/ccm.user.min.js", {
+                                    'root': self.element.querySelector('.login'),
+                                    "sign_on": "hbrsinfkaul"
+                                }],
                                 "enableOffline": "false",
-                                "storeConfig":{
-                                "store":"SE1_news_feed",
-                                    "url":"https://ccm.inf.h-brs.de"
+                                "storeConfig": {
+                                    "store": "SE1_news_feed",
+                                    "url": "https://ccm.inf.h-brs.de"
                                 }
                             });
-                            route_2.navigatedTo('/'+this.id);
-                        }
+                        route_1.navigatedTo('/' + this.id);
+                    }
                 });
-                subnodeArray.push("/newsfeed");
+                my.subnodeArray.push("/newsfeed");
                 let nav = self.element.querySelector('.nav');
-                this.ccm.start(my.navhamburger, {
+                self.ccm.start(my.navhamburger, {
                     root: nav,
                     "section": navInner
                 });
 
+            };
+            this.getUrlRoutes = url => {
+                console.log(url);
+                let pathname = new URL(url).hash;
+                let route = pathname.split('/');
+                return route[1];
+            };
+            this.getHTMLContent = (inner, value) => {
+                for (let i = 0; i < inner.length; i++) {
+                    if (inner[i][0] === value) {
+                        return inner[i][1];
+                    }
+                }
             }
         }
     };
