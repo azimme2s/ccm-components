@@ -16,7 +16,7 @@ The CCM model are developed by a R&Dler from this Campus, and what exactly is us
 ### The Features
 All the features are developed with ccm components. To make a clear overview I will list all the components and give a short description with some configuration option that are needed.
 
-####se1-pwa  T
+#### se1-pwa 
 This Component is the main point for the hole app. Many components will be used here. For example the nav-burger menue. There for you need the Information how many Entries this menue will have. When you add the se1-pwa komponent in the index HTML you can set the inner value with a list it will look like that 
 ```html 
 <ccm-se1-menu  inner='[
