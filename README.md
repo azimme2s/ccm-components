@@ -19,8 +19,8 @@ Some of the component will be a more specific explained in a later section.
 
 | Component | Explanation |
 | --- | --- |
-| se1-pwa  | This Component is the main point for the hole app. Many components will be used here. For example the nav-burger menue. There for you need the Information how many Entries this menue will have. When you add the se1-pwa komponent in the index HTML you can set the inner value with a list it will look like that ```javascript <ccm-se1-menu
-        inner='[
+| se1-pwa  | This Component is the main point for the hole app. Many components will be used here. For example the nav-burger menue. There for you need the Information how many Entries this menue will have. When you add the se1-pwa komponent in the index HTML you can set the inner value with a list it will look like that ```html 
+<ccm-se1-menu  inner='[
         ["le00", "https://kaul.inf.h-brs.de/data/2017/se1/le00.html"],
         ["le01", "https://kaul.inf.h-brs.de/data/2017/se1/le01.html"],
         ["le03", "https://kaul.inf.h-brs.de/data/2017/se1/le03.html"],
@@ -33,7 +33,8 @@ Some of the component will be a more specific explained in a later section.
         ["le10", "https://kaul.inf.h-brs.de/data/2017/se1/le10.html"],
         ["le11", "https://kaul.inf.h-brs.de/data/2017/se1/le11.html"],
         ["le12", "https://kaul.inf.h-brs.de/data/2017/se1/le12.html"]
-        ]'></ccm-se1-menu> ```  |
+        ]'></ccm-se1-menu> 
+        ```  |
 | Content Cell  | Content Cell  |
 ### The Service Worker
 
