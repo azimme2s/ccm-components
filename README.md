@@ -14,12 +14,10 @@ For more details read the following [Link from Google](https://developers.google
 
 The CCM model are developed by a R&Dler from this Campus, and what exactly is used, will this discused later on this Guide
 ### The Features
-All the features are developed with ccm components. To make a clear overview I will list all the components in a Table and give a short description with some configuration option that are needed.
-Some of the component will be a more specific explained in a later section.
+All the features are developed with ccm components. To make a clear overview I will list all the components and give a short description with some configuration option that are needed.
 
-| Component | Explanation |
-| --- | --- |
-| se1-pwa  | This Component is the main point for the hole app. Many components will be used here. For example the nav-burger menue. There for you need the Information how many Entries this menue will have. When you add the se1-pwa komponent in the index HTML you can set the inner value with a list it will look like that 
+####se1-pwa  T
+This Component is the main point for the hole app. Many components will be used here. For example the nav-burger menue. There for you need the Information how many Entries this menue will have. When you add the se1-pwa komponent in the index HTML you can set the inner value with a list it will look like that 
 ```html 
 <ccm-se1-menu  inner='[
         ["le00", "https://kaul.inf.h-brs.de/data/2017/se1/le00.html"],
@@ -36,8 +34,7 @@ Some of the component will be a more specific explained in a later section.
         ["le12", "https://kaul.inf.h-brs.de/data/2017/se1/le12.html"]
         ]'></ccm-se1-menu>
 ```  
-|
-| Content Cell  | Content Cell  |
+
 ### The Service Worker
 
 ### The Data Storage
