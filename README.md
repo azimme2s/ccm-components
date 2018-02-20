@@ -14,12 +14,28 @@ For more details read the following [Link from Google](https://developers.google
 
 The CCM model are developed by a R&Dler from this Campus, and what exactly is used, will this discused later on this Guide
 ### The Features
-All the features are developed with ccm components. To make a clear overview I  will list all the features in a Table a give a short description with some configuration option that are needed.
-For some of the features will be a more specific explanation.
+All the features are developed with ccm components. To make a clear overview I will list all the components in a Table and give a short description with some configuration option that are needed.
+Some of the component will be a more specific explained in a later section.
 
-| First Header  | Second Header |
+| Component | Explanation |
 | --- | --- |
-| Content Cell  | Content Cell  |
+| se1-pwa  | This Component is the main point for the hole app. Many components will be used here. For example the nav-burger menue. There for you need the Information how many Entries this menue will have. When you add the se1-pwa komponent in the index HTML you can set the inner value with a list it will look like that ```javascript
+<ccm-se1-menu
+        inner='[
+        ["le00", "https://kaul.inf.h-brs.de/data/2017/se1/le00.html"],
+        ["le01", "https://kaul.inf.h-brs.de/data/2017/se1/le01.html"],
+        ["le03", "https://kaul.inf.h-brs.de/data/2017/se1/le03.html"],
+        ["le04", "https://kaul.inf.h-brs.de/data/2017/se1/le04.html"],
+        ["le05", "https://kaul.inf.h-brs.de/data/2017/se1/le05.html"],
+        ["le06", "https://kaul.inf.h-brs.de/data/2017/se1/le06.html"],
+        ["le07", "https://kaul.inf.h-brs.de/data/2017/se1/le07.html"],
+        ["le08", "https://kaul.inf.h-brs.de/data/2017/se1/le08.html"],
+        ["le09", "https://kaul.inf.h-brs.de/data/2017/se1/le09.html"],
+        ["le10", "https://kaul.inf.h-brs.de/data/2017/se1/le10.html"],
+        ["le11", "https://kaul.inf.h-brs.de/data/2017/se1/le11.html"],
+        ["le12", "https://kaul.inf.h-brs.de/data/2017/se1/le12.html"]
+        ]'></ccm-se1-menu>
+```  |
 | Content Cell  | Content Cell  |
 ### The Service Worker
 
