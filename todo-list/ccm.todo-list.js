@@ -8,7 +8,7 @@
                     [
                         {tag: 'header', class: 'header', inner: 
                             [
-                                {tag:'hi', inner: 'todos'},
+                                {tag:'h1', inner: 'todos'},
                                 {tag:'input', class:'new-todo', placeholder: 'What needs to be done?'}
                             ]
                         },
@@ -22,18 +22,19 @@
                         {tag: 'footer', class: 'footer', inner: 
                             [
                                 {tag:'span', class:'todo-count'},
-                                {tag:'ul', class:'todo-list', inner:
+                                {tag:'div', class:'filters', inner:
                                     [
-                                        {tag:'li', inner: {tag:'a', href:'#/', class:'selected', inner: 'All'}},
-                                        {tag:'li', inner: {tag:'a', href:'#/active', inner: 'Active'}},
-                                        {tag:'li', inner: {tag:'a', href:'#/completed', inner: 'Completed'}},
+                                        {tag:'a', href:'#/', class:'selected', inner: 'All'},
+                                        {tag:'a', href:'#/active', inner: 'Active'},
+                                        {tag:'a', href:'#/completed', inner: 'Completed'},
                                     ]
                                 },
-                                {tag:'button', for:'clear-completed', inner: 'Clear completed'}
+                                {tag:'button', class:'clear-completed', inner: 'Clear completed'}
                             ]
                         },
                     ] 
             },
+            css:  ['ccm.load', 'style.css'],
         },
         Instance: function () {
             let self = this;
