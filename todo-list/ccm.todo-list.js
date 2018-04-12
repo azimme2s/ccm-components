@@ -31,26 +31,110 @@
                                 },
                                 {tag:'button', class:'clear-completed', inner: 'Clear completed'}
                             ]
-                        },
+                        }
                     ] 
             },
-            css:  ['ccm.load', 'style.css'],
+            css:  ['ccm.load', 'style.css']
         },
         Instance: function () {
             let self = this;
             let my;
+            let indexedDB = window.indexedDB || self.window.mozIndexedDB || self.window.webkitIndexedDB || self.window.msIndexedDB || self.window.shimIndexedDB;
 
             this.ready = function (callback) {
                 my = self.ccm.helper.privatize(self);
                 if (callback) callback();
             };
             this.start = function (callback) {
+                let counter = 0;
+                let open = indexedDB.open("TodoDB", 1);
+                let db;
+                open.onerror = function(event) {
+                    console.log("Datenbankfehler: " + event.target.errorCode);
+                };
+                open.onsuccess = function(event) {
+                    db = open.result;
+                    self.readAll(db)
+                };
+                open.onupgradeneeded = function() {
+                    let db = open.result;
+                    let store = db.createObjectStore("todos", {keyPath: "id"});
+                };
                 let main_elem = self.ccm.helper.html(my.html);
                 self.element.appendChild(main_elem);
+
+                self.element.addEventListener('keypress', function (e) {
+                    let key = e.which || e.keyCode;
+                    if (key === 13) { // 13 is enter
+                        let inputString = self.element.querySelector('.new-todo').value;
+                        let entry = {id:counter++,todo:inputString};
+                        let request = db.transaction(["todos"], "readwrite")
+                            .objectStore("todos")
+                            .add(entry);
+
+                        request.onsuccess = function(event) {
+                          console.log(event);
+                          self.createNewTodo(entry, db)
+                        };
+
+                        request.onerror = function(event) {
+                            console.log(event);
+                        };
+                    }
+                });
+
                 if (callback) callback();
             };
+            this.readAll = function (db) {
+                let objectStore = db.transaction("todos").objectStore("todos");
+
+                objectStore.openCursor().onsuccess = function(event) {
+                    let cursor = event.target.result;
+                    if (cursor) {
+                        self.createNewTodo(cursor.value, db);
+                        cursor.continue();
+                    }
+                    else {
+                        console.log("No more entries!");
+                    }
+                };
+            };
+            this.createNewTodo = function (todo, db) {
+                console.log(todo);
+                let newTodo = document.createElement('li');
+                newTodo.setAttribute('id',todo.id);
+                let div = document.createElement('div');
+                div.setAttribute('class', 'view');
+                let input = document.createElement('input');
+                input.setAttribute('class','toggle');
+                input.setAttribute('type','checkbox');
+                let label = document.createElement('label');
+                label.innerHTML = todo.todo;
+                let button = document.createElement('button');
+                button.setAttribute('class','destroy');
+                button.addEventListener('click', function () {
+                    let id = newTodo.getAttribute('id');
+                    let request = db.transaction(["todos"], "readwrite")
+                        .objectStore("todos")
+                        .delete(Number(id));
+                    request.onsuccess = function(event) {
+                        newTodo.remove();
+                    };
+
+                });
+                div.appendChild(input);
+                div.appendChild(label);
+                div.appendChild(button);
+                newTodo.appendChild(div);
+
+
+                let main = self.element.querySelector('.todo-list');
+                main.appendChild(newTodo);
+            }
         }
     };
+
+
 
     function p() {
         window.ccm[v].component(component);
