@@ -1,5 +1,5 @@
 (function () {
-    var component = {
+    let component = {
         name: "todo-list",
         ccm: "https://akless.github.io/ccm/ccm.js",
         config: {
@@ -40,13 +40,13 @@
             let self = this;
             let my;
             let indexedDB = window.indexedDB || self.window.mozIndexedDB || self.window.webkitIndexedDB || self.window.msIndexedDB || self.window.shimIndexedDB;
-
+            let counter = 0;
             this.ready = function (callback) {
                 my = self.ccm.helper.privatize(self);
                 if (callback) callback();
             };
             this.start = function (callback) {
-                let counter = 0;
+
                 let open = indexedDB.open("TodoDB", 1);
                 let db;
                 open.onerror = function(event) {
@@ -87,10 +87,10 @@
             };
             this.readAll = function (db) {
                 let objectStore = db.transaction("todos").objectStore("todos");
-
                 objectStore.openCursor().onsuccess = function(event) {
                     let cursor = event.target.result;
                     if (cursor) {
+                        counter = cursor.value.id + 1;
                         self.createNewTodo(cursor.value, db);
                         cursor.continue();
                     }
@@ -100,7 +100,6 @@
                 };
             };
             this.createNewTodo = function (todo, db) {
-                console.log(todo);
                 let newTodo = document.createElement('li');
                 newTodo.setAttribute('id',todo.id);
                 let div = document.createElement('div');
@@ -108,6 +107,15 @@
                 let input = document.createElement('input');
                 input.setAttribute('class','toggle');
                 input.setAttribute('type','checkbox');
+                input.addEventListener('click', () => {
+                    let string = label.innerHTML;
+                    if(input.checked){
+                        label.innerHTML = string.strike();
+                    }
+                    else if(!input.checked){
+                        label.innerHTML = todo.todo;
+                    }
+                });
                 let label = document.createElement('label');
                 label.innerHTML = todo.todo;
                 let button = document.createElement('button');
