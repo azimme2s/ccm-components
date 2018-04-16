@@ -82,7 +82,34 @@
                         };
                     }
                 });
+                
+                self.element.querySelectorAll('a').addEventListener('click', function(){
+                    
+                });
 
+                self.element.querySelector('.clear-completed').addEventListener('click', function(){
+                        let items = self.element.querySelectorAll('.toggle');
+                        let ids = new Array;
+                        items.forEach(element => {
+                            if(element.checked){
+                               ids.push(
+                                   {
+                                        key:Number(element.parentElement.parentElement.id),
+                                        value: element.parentElement.parentElement
+                                   }
+                                       
+                                );
+                            }
+                        });
+                        ids.map(element => {
+                            let request = db.transaction(["todos"], "readwrite")
+                            .objectStore("todos")
+                            .delete(element.key);
+                            request.onsuccess = function(event) {
+                                element.value.remove();
+                            };
+                        });  
+                });
                 if (callback) callback();
             };
             this.readAll = function (db) {
