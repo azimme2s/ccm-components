@@ -24,9 +24,9 @@
                                 {tag:'span', class:'todo-count'},
                                 {tag:'div', class:'filters', inner:
                                     [
-                                        {tag:'a', href:'#/', class:'selected', inner: 'All'},
-                                        {tag:'a', href:'#/active', inner: 'Active'},
-                                        {tag:'a', href:'#/completed', inner: 'Completed'},
+                                        {tag:'a', href:'#/', class:'selected',id:'all', inner: 'All'},
+                                        {tag:'a', href:'#/active', id: 'active',inner: 'Active'},
+                                        {tag:'a', href:'#/completed', id: 'completed',inner: 'Completed'},
                                     ]
                                 },
                                 {tag:'button', class:'clear-completed', inner: 'Clear completed'}
@@ -83,13 +83,41 @@
                     }
                 });
                 
-                self.element.querySelectorAll('a').addEventListener('click', function(){
-                    
+                self.element.querySelector('#all').addEventListener('click', function(){
+                    self.element.querySelectorAll('a').forEach(element => {
+                        element.removeAttribute('class');
+                    });
+                    self.element.querySelectorAll('li').forEach(element => {
+                        element.remove();
+                    });
+                    self.readAll(db);
+                    self.element.querySelector('#all').className ='selected';
                 });
+                self.element.querySelector('#active').addEventListener('click', function(){
+                    self.element.querySelectorAll('a').forEach(element => {
+                        element.removeAttribute('class');
+                    });
+                    self.element.querySelectorAll('li').forEach(element => {
+                        element.remove();
+                    });
+                    //self.readAll(db);
+                    self.element.querySelector('#active').className ='selected';
+                });
+                self.element.querySelector('#completed').addEventListener('click', function(){
+                    self.element.querySelectorAll('a').forEach(element => {
+                        element.removeAttribute('class');
+                    });
+                    self.element.querySelectorAll('li').forEach(element => {
+                        element.remove();
+                    });
+                    //self.readAll(db);
+                    self.element.querySelector('#completed').className = '.selected';
+                });
+
 
                 self.element.querySelector('.clear-completed').addEventListener('click', function(){
                         let items = self.element.querySelectorAll('.toggle');
-                        let ids = new Array;
+                        let ids = [];
                         items.forEach(element => {
                             if(element.checked){
                                ids.push(
