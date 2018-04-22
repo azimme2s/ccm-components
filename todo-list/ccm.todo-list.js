@@ -54,7 +54,7 @@
                 };
                 open.onsuccess = function(event) {
                     db = open.result;
-                    self.readAll(db)
+                    self.readAll(db, null);
                 };
                 open.onupgradeneeded = function() {
                     let db = open.result;
@@ -67,7 +67,7 @@
                     let key = e.which || e.keyCode;
                     if (key === 13) { // 13 is enter
                         let inputString = self.element.querySelector('.new-todo').value;
-                        let entry = {id:counter++,todo:inputString};
+                        let entry = {id:counter++,todo:inputString,done:false};
                         let request = db.transaction(["todos"], "readwrite")
                             .objectStore("todos")
                             .add(entry);
@@ -87,10 +87,12 @@
                     self.element.querySelectorAll('a').forEach(element => {
                         element.removeAttribute('class');
                     });
+
                     self.element.querySelectorAll('li').forEach(element => {
                         element.remove();
                     });
-                    self.readAll(db);
+
+                    self.readAll(db,null);
                     self.element.querySelector('#all').className ='selected';
                 });
                 self.element.querySelector('#active').addEventListener('click', function(){
@@ -100,7 +102,7 @@
                     self.element.querySelectorAll('li').forEach(element => {
                         element.remove();
                     });
-                    //self.readAll(db);
+                    self.readAll(db,false);
                     self.element.querySelector('#active').className ='selected';
                 });
                 self.element.querySelector('#completed').addEventListener('click', function(){
@@ -110,7 +112,7 @@
                     self.element.querySelectorAll('li').forEach(element => {
                         element.remove();
                     });
-                    //self.readAll(db);
+                    self.readAll(db,true);
                     self.element.querySelector('#completed').className = '.selected';
                 });
 
@@ -140,13 +142,19 @@
                 });
                 if (callback) callback();
             };
-            this.readAll = function (db) {
+            this.readAll = function (db,flag) {
                 let objectStore = db.transaction("todos").objectStore("todos");
                 objectStore.openCursor().onsuccess = function(event) {
                     let cursor = event.target.result;
                     if (cursor) {
-                        counter = cursor.value.id + 1;
-                        self.createNewTodo(cursor.value, db);
+                        if(cursor.value.done === flag){
+                            counter = cursor.value.id + 1;
+                            self.createNewTodo(cursor.value, db);
+                        }
+                        else if(flag === null){
+                            counter = cursor.value.id + 1;
+                            self.createNewTodo(cursor.value, db);
+                        }
                         cursor.continue();
                     }
                     else {
@@ -154,7 +162,9 @@
                     }
                 };
             };
+
             this.createNewTodo = function (todo, db) {
+                console.log(todo);
                 let newTodo = document.createElement('li');
                 newTodo.setAttribute('id',todo.id);
                 let div = document.createElement('div');
@@ -166,9 +176,23 @@
                     let string = label.innerHTML;
                     if(input.checked){
                         label.innerHTML = string.strike();
+                        let objectStore = db.transaction("todos","readwrite").objectStore("todos");
+                        let entry = objectStore.get(todo.id);
+                        entry.onsuccess = function() {
+                            let data = entry.result;
+                            data.done = true;
+                            objectStore.put(data);
+                        }
                     }
                     else if(!input.checked){
                         label.innerHTML = todo.todo;
+                        let objectStore = db.transaction("todos","readwrite").objectStore("todos");
+                        let entry = objectStore.get(todo.id);
+                        entry.onsuccess = function() {
+                            let data = entry.result;
+                            data.done = false;
+                            objectStore.put(data);
+                        }
                     }
                 });
                 let label = document.createElement('label');
@@ -185,6 +209,13 @@
                     };
 
                 });
+                if(todo.done === true){
+                    input.checked = true;
+                    let string = label.innerHTML;
+                    if(input.checked){
+                        label.innerHTML = string.strike();
+                    }
+                }
                 div.appendChild(input);
                 div.appendChild(label);
                 div.appendChild(button);
