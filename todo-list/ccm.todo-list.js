@@ -67,19 +67,22 @@
                     let key = e.which || e.keyCode;
                     if (key === 13) { // 13 is enter
                         let inputString = self.element.querySelector('.new-todo').value;
-                        let entry = {id:counter++,todo:inputString,done:false};
-                        let request = db.transaction(["todos"], "readwrite")
-                            .objectStore("todos")
-                            .add(entry);
+                        if(!(inputString.length === 0) || inputString.trim()){
+                            let entry = {id:counter++,todo:inputString,done:false};
+                            let request = db.transaction(["todos"], "readwrite")
+                                .objectStore("todos")
+                                .add(entry);
 
-                        request.onsuccess = function(event) {
-                          console.log(event);
-                          self.createNewTodo(entry, db)
-                        };
-
-                        request.onerror = function(event) {
+                            request.onsuccess = function(event) {
                             console.log(event);
-                        };
+                            self.element.querySelector('.new-todo').value = null;
+                            self.createNewTodo(entry, db)
+                            };
+
+                            request.onerror = function(event) {
+                                console.log(event);
+                            };
+                        }
                     }
                 });
                 
