@@ -34,7 +34,8 @@
                         }
                     ] 
             },
-            css:  ['ccm.load', 'style.css']
+            css:  ['ccm.load', 'style.css'],
+            automtedTest: ['ccm.load', '../automated-test/ccm.automated-test.js']
         },
         Instance: function () {
             let self = this;
@@ -46,6 +47,8 @@
                 if (callback) callback();
             };
             this.start = function (callback) {
+
+                self.ccm.start(my.automtedTest, {html: my.html});
 
                 let open = indexedDB.open("TodoDB", 1);
                 let db;
