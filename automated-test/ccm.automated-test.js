@@ -16,11 +16,8 @@
                 if (callback) callback();
             };
             this.start = function (callback){
-                console.log(my.html);
-                console.log(my.scenario);
                 let main_elem = self.ccm.helper.html(my.html);
                 self.element.appendChild(main_elem);
-
                 if (callback) callback();
             };
         }

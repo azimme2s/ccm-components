@@ -47,7 +47,7 @@
                 if (callback) callback();
             };
             this.start = function (callback) {
-
+                console.log(self.element);
                 self.ccm.start(my.automtedTest, {html: my.html});
 
                 let open = indexedDB.open("TodoDB", 1);
