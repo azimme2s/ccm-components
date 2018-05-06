@@ -4,25 +4,99 @@
         ccm: "https://akless.github.io/ccm/ccm.js",
         config: {
             html: {},
-            scenario: {}
+            scenario: [
+                {
+                    element: "h1",
+                    action: ['checkInner', 'replaceInner'],
+                    data: ["Test", "Test1"]
+                }
+            ],
+            com: ['ccm.load', '../todo-list/ccm.todo-list.js'],
+            css: ['ccm.load', 'style.css']
         },
 
         Instance: function () {
             let self = this;
             let my;
-
+            /**
+             * Needed Variabels
+             */
+            let toTestTag;
+            let testData = [];
+            let results = [];
+            let scenarioCounter = 0;
             this.ready = function (callback) {
                 my = self.ccm.helper.privatize(self);
                 if (callback) callback();
             };
-            this.start = function (callback){
-                let main_elem = self.ccm.helper.html(my.html);
+
+            this.start = function (callback) {
+                let main_elem = self.ccm.helper.html(my.com.config.html);
                 self.element.appendChild(main_elem);
+                this.runTest(my.scenario);
+                this.showResults();
                 if (callback) callback();
             };
+
+            this.runTest = function (scenario) {
+                scenario.forEach(testRun => {
+                    scenarioCounter++;
+                    /**
+                     * Getting the Element by Tag|ID|Class
+                     * @type Node
+                     */
+                    let tag = self.element.querySelector(testRun.element);
+                    /**
+                     * Checking if the Element exist, if not the test is done and the failure will be saved in an Array
+                     */
+                    if (tag !== null) {
+                        toTestTag = tag;
+                        testData = testRun.data;
+
+                        testRun.action.forEach(a => {
+                            if(actions.hasOwnProperty(a)){
+                                actions[a]();
+                            }
+                        })
+                    }
+                    else{
+                        console.log("No element found with " + testRun.element);
+                        results.push("Scenario "+scenarioCounter+" failed because of missing element "+ testRun.element);
+                    }
+                });
+            };
+
+            let actions = {
+                checkInner: function () {
+                    if(toTestTag.innerHTML !== null){
+                        results.push("Scenario "+scenarioCounter+" checkInner passed");
+                        return true;
+                    }
+                    else{
+                        console.log("No Inner found");
+                        results.push("Scenario "+scenarioCounter+" failed because "+ toTestTag +"has no innerHTML")
+                    }
+                },
+                replaceInner: function () {
+                    testData.forEach(e =>{
+                        toTestTag.innerHTML = e;
+                        if(toTestTag.innerHTML === e){
+                            console.log("I am here");
+                            results.push("Scenario "+scenarioCounter+" passed because text could be replaced with "+e);
+                        }
+                        else{
+                            results.push("Scenario "+scenarioCounter+" failed because Text coud be not replaced");
+                        }
+                    });
+                }
+            };
+            this.showResults = function () {
+                results.forEach(element => {
+                    console.log(element);
+                })
+            }
         }
     };
-
 
 
     function p() {
