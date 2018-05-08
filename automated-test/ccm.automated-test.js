@@ -6,9 +6,23 @@
             html: {},
             scenario: [
                 {
+                    number: 1,
                     element: "h1",
-                    action: ['checkInner', 'replaceInner'],
-                    data: ["Test", "Test1"]
+                    action: [
+                        {
+                            action: 'checkInner',
+                            data: ["todos"]
+                        },
+                        {
+                            action: 'replaceInner',
+                            data: ["Test", "Test2"]
+                        },
+                        {
+                            action: 'checkInner',
+                            data: ["Test2"]
+                        }
+                    ],
+                    
                 }
             ],
             com: ['ccm.load', '../todo-list/ccm.todo-list.js'],
@@ -19,12 +33,12 @@
             let self = this;
             let my;
             /**
-             * Needed Variabels
+             * Needed Variabel, to know which element is mean
+             * and where to safe the Results
              */
             let toTestTag;
-            let testData = [];
             let results = [];
-            let scenarioCounter = 0;
+           
             this.ready = function (callback) {
                 my = self.ccm.helper.privatize(self);
                 if (callback) callback();
@@ -40,7 +54,6 @@
 
             this.runTest = function (scenario) {
                 scenario.forEach(testRun => {
-                    scenarioCounter++;
                     /**
                      * Getting the Element by Tag|ID|Class
                      * @type Node
@@ -51,11 +64,11 @@
                      */
                     if (tag !== null) {
                         toTestTag = tag;
-                        testData = testRun.data;
-
                         testRun.action.forEach(a => {
-                            if(actions.hasOwnProperty(a)){
-                                actions[a]();
+                            actions.scenarioTitle = testRun.number
+                            if(actions.hasOwnProperty(a.action)){
+                                actions.actionData = a.data;
+                                actions[a.action]();
                             }
                         })
                     }
@@ -67,25 +80,27 @@
             };
 
             let actions = {
+                actionData: [],
+                scenarioTitle: "",
                 checkInner: function () {
-                    if(toTestTag.innerHTML !== null){
-                        results.push("Scenario "+scenarioCounter+" checkInner passed");
-                        return true;
-                    }
-                    else{
-                        console.log("No Inner found");
-                        results.push("Scenario "+scenarioCounter+" failed because "+ toTestTag +"has no innerHTML")
-                    }
-                },
-                replaceInner: function () {
-                    testData.forEach(e =>{
-                        toTestTag.innerHTML = e;
+                    this.actionData.forEach(e => {
                         if(toTestTag.innerHTML === e){
-                            console.log("I am here");
-                            results.push("Scenario "+scenarioCounter+" passed because text could be replaced with "+e);
+                            results.push("Scenario "+this.scenarioTitle+" checkInner passed with "+e);
+                            return true;
                         }
                         else{
-                            results.push("Scenario "+scenarioCounter+" failed because Text coud be not replaced");
+                            results.push("Scenario "+this.scenarioTitle+" failed because "+ toTestTag +"has no innerHTML with "+ e);
+                        }
+                    });
+                },
+                replaceInner: function () {
+                    this.actionData.forEach(e =>{
+                        toTestTag.innerHTML = e;
+                        if(toTestTag.innerHTML === e){
+                            results.push("Scenario "+this.scenarioTitle+" passed because text could be replaced with "+e);
+                        }
+                        else{
+                            results.push("Scenario "+this.scenarioTitle+" failed because Text coud be not replaced");
                         }
                     });
                 }
