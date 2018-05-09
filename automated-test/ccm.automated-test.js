@@ -6,13 +6,11 @@
             html: {},
             scenario: [
                 {
-                    element: "h1",
+                    element: 'h1',
                     action: ['checkInner', 'replaceInner'],
                     data: ["Test", "Test1"]
                 }
-            ],
-            com: ['ccm.load', '../todo-list/ccm.todo-list.js'],
-            css: ['ccm.load', 'style.css']
+            ]
         },
 
         Instance: function () {
@@ -21,7 +19,7 @@
             /**
              * Needed Variabels
              */
-            let toTestTag;
+            let toTestTag = [];
             let testData = [];
             let results = [];
             let scenarioCounter = 0;
@@ -31,8 +29,8 @@
             };
 
             this.start = function (callback) {
-                let main_elem = self.ccm.helper.html(my.com.config.html);
-                self.element.appendChild(main_elem);
+                //let main_elem = self.ccm.helper.html(my.com.config.html);
+                //self.element.appendChild(main_elem);
                 this.runTest(my.scenario);
                 this.showResults();
                 if (callback) callback();
@@ -45,11 +43,13 @@
                      * Getting the Element by Tag|ID|Class
                      * @type Node
                      */
+                    console.log(self.element);
                     let tag = self.element.querySelector(testRun.element);
                     /**
                      * Checking if the Element exist, if not the test is done and the failure will be saved in an Array
                      */
-                    if (tag !== null) {
+                    if (tag) {
+                        console.log(tag);
                         toTestTag = tag;
                         testData = testRun.data;
 
@@ -81,7 +81,6 @@
                     testData.forEach(e =>{
                         toTestTag.innerHTML = e;
                         if(toTestTag.innerHTML === e){
-                            console.log("I am here");
                             results.push("Scenario "+scenarioCounter+" passed because text could be replaced with "+e);
                         }
                         else{

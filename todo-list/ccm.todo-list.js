@@ -34,6 +34,7 @@
                         }
                     ] 
             },
+            com: ['ccm.load', '../automated-test/ccm.automated-test.js'],
             css:  ['ccm.load', 'style.css']
         },
         Instance: function () {
@@ -63,6 +64,7 @@
                 self.element.appendChild(main_elem);
 
                 self.element.addEventListener('keypress', function (e) {
+                    console.log(e);
                     let key = e.which || e.keyCode;
                     if (key === 13) { // 13 is enter
                         let inputString = self.element.querySelector('.new-todo').value;
@@ -142,6 +144,7 @@
                             };
                         });  
                 });
+                self.ccm.start(my.com);
                 if (callback) callback();
             };
             this.readAll = function (db,flag) {
@@ -166,7 +169,6 @@
             };
 
             this.createNewTodo = function (todo, db) {
-                console.log(todo);
                 let newTodo = document.createElement('li');
                 newTodo.setAttribute('id',todo.id);
                 let div = document.createElement('div');
