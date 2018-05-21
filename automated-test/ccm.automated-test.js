@@ -10,7 +10,9 @@
                     action: ['checkInner', 'replaceInner'],
                     data: ["Test", "Test1"]
                 }
-            ]
+            ],
+            com: ['ccm.load', '../todo-list/ccm.todo-list.js'],
+            css:  ['ccm.load', 'style.css']
         },
 
         Instance: function () {
@@ -29,8 +31,10 @@
             };
 
             this.start = function (callback) {
-                //let main_elem = self.ccm.helper.html(my.com.config.html);
-                //self.element.appendChild(main_elem);
+                self.ccm.start(my.com, {root:self.element});
+                let main_elem = self.ccm.helper.html(my.com.config.html);
+                self.element.appendChild(main_elem);
+
                 this.runTest(my.scenario);
                 this.showResults();
                 if (callback) callback();

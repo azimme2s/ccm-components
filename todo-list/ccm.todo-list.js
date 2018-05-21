@@ -34,7 +34,6 @@
                         }
                     ] 
             },
-            com: ['ccm.load', '../automated-test/ccm.automated-test.js'],
             css:  ['ccm.load', 'style.css']
         },
         Instance: function () {
@@ -144,7 +143,6 @@
                             };
                         });  
                 });
-                self.ccm.start(my.com);
                 if (callback) callback();
             };
             this.readAll = function (db,flag) {
