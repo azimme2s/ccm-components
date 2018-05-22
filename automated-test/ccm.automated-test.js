@@ -11,7 +11,7 @@
                     data: ["Test", "Test1"]
                 }
             ],
-            com: ['ccm.load', '../todo-list/ccm.todo-list.js'],
+            com: ['ccm.instance', '../todo-list/ccm.todo-list.js'],
             css:  ['ccm.load', 'style.css']
         },
 
@@ -31,9 +31,13 @@
             };
 
             this.start = function (callback) {
-                self.ccm.start(my.com, {root:self.element});
-                let main_elem = self.ccm.helper.html(my.com.config.html);
-                self.element.appendChild(main_elem);
+                
+                //let main_elem = self.ccm.helper.html(my.html);
+                //self.ccm.start(self.com, {root:main_elem});
+                //self.element.appendChild(main_elem);
+                self.com.root = self.element;
+                self.com.start();
+                console.log(self.com);
 
                 this.runTest(my.scenario);
                 this.showResults();
@@ -47,7 +51,6 @@
                      * Getting the Element by Tag|ID|Class
                      * @type Node
                      */
-                    console.log(self.element);
                     let tag = self.element.querySelector(testRun.element);
                     /**
                      * Checking if the Element exist, if not the test is done and the failure will be saved in an Array
