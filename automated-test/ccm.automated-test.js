@@ -6,9 +6,16 @@
             html: {},
             scenario: [
                 {
-                    element: 'h1',
+                    scenarioname: 'first',
+                    element: 'a',
                     action: ['checkInner', 'replaceInner'],
                     data: ["Test", "Test1"]
+                },
+                {
+                    scenarioname: 'check',
+                    element: 'a',
+                    action: ['checkInner'],
+                    data: ["Test1"]
                 }
             ],
             com: ['ccm.instance', '../todo-list/ccm.todo-list.js'],
@@ -24,7 +31,7 @@
             let toTestTag = [];
             let testData = [];
             let results = [];
-            let scenarioCounter = 0;
+            let scenarioName;
             this.ready = function (callback) {
                 my = self.ccm.helper.privatize(self);
                 if (callback) callback();
@@ -35,29 +42,27 @@
                 //let main_elem = self.ccm.helper.html(my.html);
                 //self.ccm.start(self.com, {root:main_elem});
                 //self.element.appendChild(main_elem);
-                self.com.root = self.element;
-                self.com.start();
-                console.log(self.com);
-
-                this.runTest(my.scenario);
-                this.showResults();
-                if (callback) callback();
+                //self.com.root = self.element;
+                self.com.start(function(){
+                    self.element.appendChild(self.com.root);
+                    self.runTest(my.scenario);
+                    self.showResults();
+                    if (callback) callback();
+                });
             };
 
             this.runTest = function (scenario) {
                 scenario.forEach(testRun => {
-                    scenarioCounter++;
+                    scenarioName = testRun.scenarioname;
                     /**
                      * Getting the Element by Tag|ID|Class
                      * @type Node
                      */
-                    let tag = self.element.querySelector(testRun.element);
+                    toTestTag = self.com.element.querySelectorAll(testRun.element);
                     /**
                      * Checking if the Element exist, if not the test is done and the failure will be saved in an Array
                      */
-                    if (tag) {
-                        console.log(tag);
-                        toTestTag = tag;
+                    if (toTestTag) {
                         testData = testRun.data;
 
                         testRun.action.forEach(a => {
@@ -68,31 +73,45 @@
                     }
                     else{
                         console.log("No element found with " + testRun.element);
-                        results.push("Scenario "+scenarioCounter+" failed because of missing element "+ testRun.element);
+                        results.push("Scenario "+scenarioName+" failed because of missing element "+ testRun.element);
                     }
                 });
             };
 
             let actions = {
                 checkInner: function () {
-                    if(toTestTag.innerHTML !== null){
-                        results.push("Scenario "+scenarioCounter+" checkInner passed");
-                        return true;
-                    }
-                    else{
-                        console.log("No Inner found");
-                        results.push("Scenario "+scenarioCounter+" failed because "+ toTestTag +"has no innerHTML")
-                    }
+                    toTestTag.forEach(oneTag => {
+                        if(oneTag.innerHTML !== null || oneTag.innerHTML !== ""){
+                            results.push("Scenario "+scenarioName+" checkInner passed");
+                            return true;
+                        }
+                        else{
+                            console.log("No Inner found");
+                            results.push("Scenario "+scenarioName+" failed because "+ oneTag +"has no innerHTML");
+                        }
+                    });
+                },
+                chechkForEmpty: function() {
+                    toTestTag.forEach(oneTag => {
+                        if(oneTag.innerHTML.empty()){
+                            results.push("Scenario "+ scenarioName +" check for empty passed");
+                        }
+                        else{
+                            results.push("Scenario "+scenarioName+" failed because "+ oneTag +" is not empty");
+                        }
+                    });
                 },
                 replaceInner: function () {
                     testData.forEach(e =>{
-                        toTestTag.innerHTML = e;
-                        if(toTestTag.innerHTML === e){
-                            results.push("Scenario "+scenarioCounter+" passed because text could be replaced with "+e);
-                        }
-                        else{
-                            results.push("Scenario "+scenarioCounter+" failed because Text coud be not replaced");
-                        }
+                        toTestTag.forEach(oneTag => {
+                            oneTag.innerHTML = e;
+                            if(oneTag.innerHTML === e){
+                                results.push("Scenario "+scenarioName+" passed because text could be replaced with "+e);
+                            }
+                            else{
+                                results.push("Scenario "+scenarioName+" failed because Text could be not replaced");
+                            }
+                        });
                     });
                 }
             };
