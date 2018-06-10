@@ -7,15 +7,21 @@
             scenario: [
                 {
                     scenarioname: 'first',
-                    element: 'a',
+                    element: 'h1',
                     action: ['checkInner', 'replaceInner'],
                     data: ["Test", "Test1"]
                 },
                 {
                     scenarioname: 'check',
                     element: 'a',
-                    action: ['checkInner'],
+                    action: ['checkInner', 'chechkForEmptyInner'],
                     data: ["Test1"]
+                },
+                {
+                    scenarioname: 'empty input field',
+                    element: '.new-todo',
+                    action: ['isEmptyInput'],
+                    data:[]
                 }
             ],
             com: ['ccm.instance', '../todo-list/ccm.todo-list.js'],
@@ -72,7 +78,6 @@
                         })
                     }
                     else{
-                        console.log("No element found with " + testRun.element);
                         results.push("Scenario "+scenarioName+" failed because of missing element "+ testRun.element);
                     }
                 });
@@ -91,9 +96,9 @@
                         }
                     });
                 },
-                chechkForEmpty: function() {
+                chechkForEmptyInner: function() {
                     toTestTag.forEach(oneTag => {
-                        if(oneTag.innerHTML.empty()){
+                        if(!oneTag.innerHTML){
                             results.push("Scenario "+ scenarioName +" check for empty passed");
                         }
                         else{
@@ -112,6 +117,16 @@
                                 results.push("Scenario "+scenarioName+" failed because Text could be not replaced");
                             }
                         });
+                    });
+                },
+                isEmptyInput: function(){
+                    toTestTag.forEach(oneTag => {
+                        if(oneTag.value === "" || oneTag.value === null){
+                            results.push("Scenario "+ scenarioName +" is empty");
+                        }
+                        else{
+                            results.push("Scenario "+scenarioName+" failed because "+ oneTag +" is not empty");
+                        }
                     });
                 }
             };
