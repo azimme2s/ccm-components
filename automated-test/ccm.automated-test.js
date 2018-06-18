@@ -59,6 +59,7 @@
 
             this.runTest = function (scenario) {
                 scenario.forEach(testRun => {
+                    let actions = new Actions();
                     scenarioName = testRun.scenarioname;
                     /**
                      * Getting the Element by Tag|ID|Class
@@ -83,8 +84,8 @@
                 });
             };
 
-            let actions = {
-                checkInner: function () {
+            function Actions() {
+                this.checkInner = function () {
                     toTestTag.forEach(oneTag => {
                         if(oneTag.innerHTML !== null || oneTag.innerHTML !== ""){
                             results.push("Scenario "+scenarioName+" checkInner passed");
@@ -96,7 +97,7 @@
                         }
                     });
                 },
-                chechkForEmptyInner: function() {
+                this.chechkForEmptyInner = function() {
                     toTestTag.forEach(oneTag => {
                         if(!oneTag.innerHTML){
                             results.push("Scenario "+ scenarioName +" check for empty passed");
@@ -106,7 +107,7 @@
                         }
                     });
                 },
-                replaceInner: function () {
+                this.replaceInner = function () {
                     testData.forEach(e =>{
                         toTestTag.forEach(oneTag => {
                             oneTag.innerHTML = e;
@@ -119,7 +120,7 @@
                         });
                     });
                 },
-                isEmptyInput: function(){
+                this.isEmptyInput = function(){
                     toTestTag.forEach(oneTag => {
                         if(oneTag.value === "" || oneTag.value === null){
                             results.push("Scenario "+ scenarioName +" is empty");

@@ -34,7 +34,6 @@
                         }
                     ] 
             },
-            teststore: ['ccm.store', {store: 'Teststore'}],
             css:  ['ccm.load', 'style.css']
         },
         Instance: function () {
@@ -63,7 +62,6 @@
                 let main_elem = self.ccm.helper.html(my.html);
                 self.element.appendChild(main_elem);
 
-                my.teststore.set({key:'test',foo:'bar'}, console.log);
                 self.element.addEventListener('keypress', function (e) {
                     console.log(e);
                     let key = e.which || e.keyCode;
