@@ -21,38 +21,28 @@
                     scenarioname: 'empty input field',
                     element: '.new-todo',
                     action: ['isEmptyInput'],
-                    data:[]
+                    data: []
                 }
             ],
             com: ['ccm.instance', '../todo-list/ccm.todo-list.js'],
-            css:  ['ccm.load', 'style.css']
+            css: ['ccm.load', 'style.css']
         },
 
         Instance: function () {
             let self = this;
             let my;
-            /**
-             * Needed Variabels
-             */
-            let toTestTag = [];
-            let testData = [];
-            let results = [];
-            let scenarioName;
+
             this.ready = function (callback) {
                 my = self.ccm.helper.privatize(self);
                 if (callback) callback();
             };
 
             this.start = function (callback) {
-                
-                //let main_elem = self.ccm.helper.html(my.html);
-                //self.ccm.start(self.com, {root:main_elem});
-                //self.element.appendChild(main_elem);
-                //self.com.root = self.element;
-                self.com.start(function(){
+
+                self.com.start(function () {
                     self.element.appendChild(self.com.root);
                     self.runTest(my.scenario);
-                    self.showResults();
+
                     if (callback) callback();
                 });
             };
@@ -60,82 +50,91 @@
             this.runTest = function (scenario) {
                 scenario.forEach(testRun => {
                     let actions = new Actions();
-                    scenarioName = testRun.scenarioname;
+
+                    actions.scenarioName = testRun.scenarioname;
                     /**
                      * Getting the Element by Tag|ID|Class
                      * @type Node
                      */
-                    toTestTag = self.com.element.querySelectorAll(testRun.element);
+                    actions.toTestTag = self.com.element.querySelectorAll(testRun.element);
                     /**
                      * Checking if the Element exist, if not the test is done and the failure will be saved in an Array
                      */
-                    if (toTestTag) {
-                        testData = testRun.data;
+                    if (actions.toTestTag) {
+                        actions.testData = testRun.data;
 
                         testRun.action.forEach(a => {
-                            if(actions.hasOwnProperty(a)){
+                            if (actions.hasOwnProperty(a)) {
                                 actions[a]();
                             }
                         })
                     }
-                    else{
-                        results.push("Scenario "+scenarioName+" failed because of missing element "+ testRun.element);
+                    else {
+                        actions.results.push("Scenario " + actions.scenarioName + " failed because of missing element " + testRun.element);
                     }
+                    actions.showResults();
                 });
             };
 
             function Actions() {
+                this.toTestTag = [];
+                this.testData = [];
+                this.results = [];
+                this.scenarioName;
+
                 this.checkInner = function () {
-                    toTestTag.forEach(oneTag => {
-                        if(oneTag.innerHTML !== null || oneTag.innerHTML !== ""){
-                            results.push("Scenario "+scenarioName+" checkInner passed");
+                    this.toTestTag.forEach(oneTag => {
+                        if (oneTag.innerHTML !== null || oneTag.innerHTML !== "") {
+                            this.results.push("Scenario " + this.scenarioName + " checkInner passed");
                             return true;
                         }
-                        else{
+                        else {
                             console.log("No Inner found");
-                            results.push("Scenario "+scenarioName+" failed because "+ oneTag +"has no innerHTML");
+                            this.results.push("Scenario " + scenarioName + " failed because " + oneTag + "has no innerHTML");
                         }
                     });
-                },
-                this.chechkForEmptyInner = function() {
-                    toTestTag.forEach(oneTag => {
-                        if(!oneTag.innerHTML){
-                            results.push("Scenario "+ scenarioName +" check for empty passed");
+                };
+                this.chechkForEmptyInner = function () {
+                    this.toTestTag.forEach(oneTag => {
+                        if (!oneTag.innerHTML) {
+                            this.results.push("Scenario " + this.scenarioName + " check for empty passed");
                         }
-                        else{
-                            results.push("Scenario "+scenarioName+" failed because "+ oneTag +" is not empty");
+                        else {
+                            this.results.push("Scenario " + this.scenarioName + " failed because " + oneTag + " is not empty");
                         }
                     });
-                },
+                };
                 this.replaceInner = function () {
-                    testData.forEach(e =>{
-                        toTestTag.forEach(oneTag => {
+                    this.testData.forEach(e => {
+                        this.toTestTag.forEach(oneTag => {
                             oneTag.innerHTML = e;
-                            if(oneTag.innerHTML === e){
-                                results.push("Scenario "+scenarioName+" passed because text could be replaced with "+e);
+                            if (oneTag.innerHTML === e) {
+                                this.results.push("Scenario " + this.scenarioName + " passed because text could be replaced with " + e);
                             }
-                            else{
-                                results.push("Scenario "+scenarioName+" failed because Text could be not replaced");
+                            else {
+                                this.results.push("Scenario " + this.scenarioName + " failed because Text could be not replaced");
                             }
                         });
                     });
-                },
-                this.isEmptyInput = function(){
-                    toTestTag.forEach(oneTag => {
-                        if(oneTag.value === "" || oneTag.value === null){
-                            results.push("Scenario "+ scenarioName +" is empty");
+                };
+                this.isEmptyInput = function () {
+                    this.toTestTag.forEach(oneTag => {
+                        if (oneTag.value === "" || oneTag.value === null) {
+                            this.results.push("Scenario " +  this.scenarioName + " is empty");
                         }
-                        else{
-                            results.push("Scenario "+scenarioName+" failed because "+ oneTag +" is not empty");
+                        else {
+                            this.results.push("Scenario " +  this.scenarioName + " failed because " + oneTag + " is not empty");
                         }
                     });
-                }
-            };
-            this.showResults = function () {
-                results.forEach(element => {
-                    console.log(element);
-                })
+                };
+
+                this.showResults = function () {
+                    this.results.forEach(element => {
+                        console.log(element);
+                    })
+                };
             }
+
         }
     };
 
