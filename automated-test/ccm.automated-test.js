@@ -3,7 +3,17 @@
         name: "automated-test",
         ccm: "https://akless.github.io/ccm/ccm.js",
         config: {
-            html: {},
+            html:
+                {tag: 'div', class: 'modal', inner:
+                    [
+                        {tag: 'div', class:'modal-content', inner:
+                                [
+                                    {tag:'span', class:'close', inner: '&times;'},
+                                    {tag:'p'},
+                                ]
+                        }
+                    ]
+                },
             scenario: [
                 {
                     scenarioname: 'first',
@@ -22,7 +32,7 @@
                     element: '.new-todo',
                     action: ['isEmptyInput'],
                     data: []
-                }
+                },
             ],
             com: ['ccm.instance', '../todo-list/ccm.todo-list.js'],
             css: ['ccm.load', 'style.css']
@@ -38,7 +48,8 @@
             };
 
             this.start = function (callback) {
-
+                let main_elem = self.ccm.helper.html(my.html);
+                self.element.appendChild(main_elem);
                 self.com.start(function () {
                     self.element.appendChild(self.com.root);
                     self.runTest(my.scenario);
@@ -129,7 +140,22 @@
                 };
 
                 this.showResults = function () {
+                    let modal = self.element.querySelector('.modal');
+                    modal.style.display = 'block';
+                    let close = self.element.querySelector('.close');
+                    close.onclick = function(){
+                        modal.style.display = "none";
+                    };
+                    self.element.onclick = function(event) {
+                        if (event.target === modal) {
+                            modal.style.display = "none";
+                        }
+                    };
+                    let modalContent = self.element.querySelector('.modal-content');
                     this.results.forEach(element => {
+                        let p = document.createElement('p');
+                        p.innerHTML = element;
+                        modalContent.appendChild(p);
                         console.log(element);
                     })
                 };
