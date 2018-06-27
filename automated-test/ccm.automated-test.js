@@ -33,6 +33,12 @@
                     action: ['isEmptyInput'],
                     data: []
                 },
+                {
+                    scenarioname: 'Initial Data',
+                    element: '.new-todo',
+                    action: ['intialize'],
+                    data: [1,2,3,4]
+                }
             ],
             com: ['ccm.instance', '../todo-list/ccm.todo-list.js'],
             css: ['ccm.load', 'style.css']
@@ -97,7 +103,6 @@
                     this.toTestTag.forEach(oneTag => {
                         if (oneTag.innerHTML !== null || oneTag.innerHTML !== "") {
                             this.results.push("Scenario " + this.scenarioName + " checkInner passed");
-                            return true;
                         }
                         else {
                             console.log("No Inner found");
@@ -138,6 +143,16 @@
                         }
                     });
                 };
+                this.intialize = function () {
+                    this.toTestTag.forEach(oneTag => {
+                        this.testData.forEach(entry => {
+                            oneTag.value = entry;
+                            var evt = new KeyboardEvent('keydown', {'keyCode':13, 'which':13});
+                            console.log(document.dispatchEvent(evt));
+                            document.dispatchEvent(evt);
+                        });
+                    });
+                }
 
                 this.showResults = function () {
                     let modal = self.element.querySelector('.modal');
