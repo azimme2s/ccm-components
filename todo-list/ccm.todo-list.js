@@ -40,29 +40,30 @@
             let self = this;
             let my;
             let indexedDB = window.indexedDB || self.window.mozIndexedDB || self.window.webkitIndexedDB || self.window.msIndexedDB || self.window.shimIndexedDB;
+            let open = indexedDB.open("TodoDB", 1);
+            let db;
+            open.onerror = function(event) {
+                console.log("Datenbankfehler: " + event.target.errorCode);
+            };
+            open.onsuccess = function(event) {
+                db = open.result;
+                self.readAll(db, null);
+            };
+            open.onupgradeneeded = function() {
+                let db = open.result;
+                let store = db.createObjectStore("todos", {keyPath: "id"});
+            };
             let counter = 0;
             this.ready = function (callback) {
                 my = self.ccm.helper.privatize(self);
                 if (callback) callback();
             };
             this.start = function (callback) {
-                let open = indexedDB.open("TodoDB", 1);
-                let db;
-                open.onerror = function(event) {
-                    console.log("Datenbankfehler: " + event.target.errorCode);
-                };
-                open.onsuccess = function(event) {
-                    db = open.result;
-                    self.readAll(db, null);
-                };
-                open.onupgradeneeded = function() {
-                    let db = open.result;
-                    let store = db.createObjectStore("todos", {keyPath: "id"});
-                };
+
                 let main_elem = self.ccm.helper.html(my.html);
                 self.element.appendChild(main_elem);
 
-                self.element.addEventListener('keypress', function (e) {
+                self.element.onkeypress = function (e) {
                     console.log(e);
                     let key = e.which || e.keyCode;
                     if (key === 13) { // 13 is enter
@@ -84,7 +85,7 @@
                             };
                         }
                     }
-                });
+                };
                 
                 self.element.querySelector('#all').addEventListener('click', function(){
                     self.element.querySelectorAll('a').forEach(element => {
