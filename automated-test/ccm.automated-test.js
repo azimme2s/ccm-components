@@ -147,12 +147,12 @@
                     this.toTestTag.forEach(oneTag => {
                         this.testData.forEach(entry => {
                             oneTag.value = entry;
-                            var evt = new KeyboardEvent('keydown', {'keyCode':13, 'which':13});
+                            let evt = new KeyboardEvent('keydown', {'keyCode':13, 'which':13});
                             console.log(document.dispatchEvent(evt));
                             document.dispatchEvent(evt);
                         });
                     });
-                }
+                };
 
                 this.showResults = function () {
                     let modal = self.element.querySelector('.modal');
