@@ -14,30 +14,14 @@
                         }
                     ]
                 },
-            scenario: [
-                {
-                    scenarioname: 'first',
-                    element: 'h1',
-                    action: ['checkInner', 'replaceInner'],
-                    data: ["Test", "Test1"]
-                },
-                {
-                    scenarioname: 'check',
-                    element: 'a',
-                    action: ['checkInner', 'chechkForEmptyInner'],
-                    data: ["Test1"]
-                },
-                {
-                    scenarioname: 'empty input field',
-                    element: '.new-todo',
-                    action: ['isEmptyInput'],
-                    data: []
-                },
+            scenarios: [
                 {
                     scenarioname: 'Initial Data',
-                    element: '.new-todo',
-                    action: ['intialize'],
-                    data: [1,2,3,4]
+                    scenario: [{
+                        element: '.new-todo',
+                        action: 'isEmptyInput',
+                        data: []
+                    }]
                 }
             ],
             com: ['ccm.instance', '../todo-list/ccm.todo-list.js'],
@@ -58,25 +42,37 @@
                 self.element.appendChild(main_elem);
                 self.com.start(function () {
                     self.element.appendChild(self.com.root);
-                    self.runTest(my.scenario);
+                    self.runTest(my.scenarios);
 
                     if (callback) callback();
                 });
             };
 
-            this.runTest = function (scenario) {
-                scenario.forEach(testRun => {
+            this.runTest = function (scenarios) {
+                scenarios.forEach(testRun => {
                     let actions = new Actions();
 
                     actions.scenarioName = testRun.scenarioname;
+                    testRun.scenario.forEach(s => {
+                        actions.toTestTag = self.com.element.querySelectorAll(s.element);
+
+                        if (actions.toTestTag) {
+                            actions.testData = s.data;
+                            if (actions.hasOwnProperty(s.action)) {
+                                actions[s.action]();
+                            } 
+                        }
+                        else {
+                            actions.results.push("Scenario " + actions.scenarioName + " failed because of missing element " + s.element);
+                        }
+                        actions.showResults();
+                    });
                     /**
                      * Getting the Element by Tag|ID|Class
                      * @type Node
-                     */
+                     
                     actions.toTestTag = self.com.element.querySelectorAll(testRun.element);
-                    /**
-                     * Checking if the Element exist, if not the test is done and the failure will be saved in an Array
-                     */
+                   
                     if (actions.toTestTag) {
                         actions.testData = testRun.data;
 
@@ -90,6 +86,7 @@
                         actions.results.push("Scenario " + actions.scenarioName + " failed because of missing element " + testRun.element);
                     }
                     actions.showResults();
+                    */
                 });
             };
 
@@ -150,6 +147,7 @@
                             var evt = new KeyboardEvent('keydown', {'keyCode':13, 'which':13});
                             console.log(document.dispatchEvent(evt));
                             document.dispatchEvent(evt);
+                            console.log(self.com);
                         });
                     });
                 }
