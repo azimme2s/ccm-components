@@ -17,11 +17,23 @@
             scenarios: [
                 {
                     scenarioname: 'Initial Data',
-                    scenario: [{
-                        element: '.new-todo',
-                        action: 'isEmptyInput',
-                        data: []
-                    }]
+                    scenario: [
+                        {
+                            element: '.new-todo',
+                            action: 'isEmptyInput',
+                            data: []
+                        },
+                        {
+                            element: '.new-todo',
+                            action: 'intialize',
+                            data: [1,2,3,'banane',5]
+                        },
+                        {
+                            element: 'li',
+                            action: 'checkAll',
+                            data: [1,2,3,'banane',5]
+                        }
+                ]
                 }
             ],
             com: ['ccm.instance', '../todo-list/ccm.todo-list.js'],
@@ -42,10 +54,17 @@
                 self.element.appendChild(main_elem);
                 self.com.start(function () {
                     self.element.appendChild(self.com.root);
-                    self.runTest(my.scenarios);
+                    //self.runTest(my.scenarios);
 
                     if (callback) callback();
                 });
+                window.onkeypress = function(e){
+                    let key = e.which || e.keyCode;
+                    if (key === 84) { // 84 is T
+                        self.runTest(my.scenarios);
+                    }
+                };
+                if (callback) callback();
             };
 
             this.runTest = function (scenarios) {
@@ -65,28 +84,8 @@
                         else {
                             actions.results.push("Scenario " + actions.scenarioName + " failed because of missing element " + s.element);
                         }
-                        actions.showResults();
                     });
-                    /**
-                     * Getting the Element by Tag|ID|Class
-                     * @type Node
-                     
-                    actions.toTestTag = self.com.element.querySelectorAll(testRun.element);
-                   
-                    if (actions.toTestTag) {
-                        actions.testData = testRun.data;
-
-                        testRun.action.forEach(a => {
-                            if (actions.hasOwnProperty(a)) {
-                                actions[a]();
-                            }
-                        })
-                    }
-                    else {
-                        actions.results.push("Scenario " + actions.scenarioName + " failed because of missing element " + testRun.element);
-                    }
                     actions.showResults();
-                    */
                 });
             };
 
@@ -144,10 +143,18 @@
                     this.toTestTag.forEach(oneTag => {
                         this.testData.forEach(entry => {
                             oneTag.value = entry;
-                            var evt = new KeyboardEvent('keydown', {'keyCode':13, 'which':13});
-                            console.log(document.dispatchEvent(evt));
-                            document.dispatchEvent(evt);
-                            console.log(self.com);
+                            let evt = new KeyboardEvent('keypress', {'keyCode':13, 'which':13});
+                            self.com.element.onkeypress(evt);
+                            this.results.push("Scenario " +  this.scenarioName + " succeed, event fired");
+                        });
+                    });
+                };
+                this.checkAll = function () {
+                    this.toTestTag.forEach(oneTag => {
+                        this.testData.forEach(data => {
+                            if(oneTag.querySelector('label').innerHTML == data){
+                                this.results.push("Element " + oneTag + "have value " + data);
+                            }
                         });
                     });
                 }
