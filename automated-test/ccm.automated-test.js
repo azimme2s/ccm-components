@@ -32,8 +32,7 @@
                             element: 'li',
                             action: 'checkAll',
                             data: [1,2,3,'banane',5]
-                        }
-                ]
+                        }]
                 }
             ],
             com: ['ccm.instance', '../todo-list/ccm.todo-list.js'],
@@ -68,11 +67,11 @@
             };
 
             this.runTest = function (scenarios) {
-                scenarios.forEach(testRun => {
+               scenarios.map(testRun => {
                     let actions = new Actions();
 
                     actions.scenarioName = testRun.scenarioname;
-                    testRun.scenario.forEach(s => {
+                    testRun.scenario.filter(s => {
                         actions.toTestTag = self.com.element.querySelectorAll(s.element);
 
                         if (actions.toTestTag) {
@@ -85,7 +84,6 @@
                             actions.results.push("Scenario " + actions.scenarioName + " failed because of missing element " + s.element);
                         }
                     });
-                    actions.showResults();
                 });
             };
 
@@ -99,10 +97,11 @@
                     this.toTestTag.forEach(oneTag => {
                         if (oneTag.innerHTML !== null || oneTag.innerHTML !== "") {
                             this.results.push("Scenario " + this.scenarioName + " checkInner passed");
+                            success(oneTag);
                         }
                         else {
-                            console.log("No Inner found");
                             this.results.push("Scenario " + scenarioName + " failed because " + oneTag + "has no innerHTML");
+                            fail(oneTag)
                         }
                     });
                 };
@@ -110,9 +109,11 @@
                     this.toTestTag.forEach(oneTag => {
                         if (!oneTag.innerHTML) {
                             this.results.push("Scenario " + this.scenarioName + " check for empty passed");
+                            success(oneTag);
                         }
                         else {
                             this.results.push("Scenario " + this.scenarioName + " failed because " + oneTag + " is not empty");
+                            fail(oneTag);
                         }
                     });
                 };
@@ -122,9 +123,11 @@
                             oneTag.innerHTML = e;
                             if (oneTag.innerHTML === e) {
                                 this.results.push("Scenario " + this.scenarioName + " passed because text could be replaced with " + e);
+                                success(oneTag);
                             }
                             else {
                                 this.results.push("Scenario " + this.scenarioName + " failed because Text could be not replaced");
+                                fail(oneTag);
                             }
                         });
                     });
@@ -133,8 +136,10 @@
                     this.toTestTag.forEach(oneTag => {
                         if (oneTag.value === "" || oneTag.value === null) {
                             this.results.push("Scenario " +  this.scenarioName + " is empty");
+                            success(oneTag)
                         }
                         else {
+                            fail(oneTag);
                             this.results.push("Scenario " +  this.scenarioName + " failed because " + oneTag + " is not empty");
                         }
                     });
@@ -146,15 +151,19 @@
                             let evt = new KeyboardEvent('keypress', {'keyCode':13, 'which':13});
                             self.com.element.onkeypress(evt);
                             this.results.push("Scenario " +  this.scenarioName + " succeed, event fired");
+                            success(oneTag);
                         });
                     });
                 };
                 this.checkAll = function () {
                     this.toTestTag.forEach(oneTag => {
-                        this.testData.forEach(data => {
+                        this.testData.filter(data => {
                             if(oneTag.querySelector('label').innerHTML == data){
-                                this.results.push("Element " + oneTag + "have value " + data);
+                                this.results.push("Element " + oneTag.innerHTML + "have value " + data);
+                                success(oneTag.querySelector('label'));
+                                return;
                             }
+                            fail(oneTag.querySelector('label'));
                         });
                     });
                 };
@@ -179,6 +188,22 @@
                         console.log(element);
                     })
                 };
+            }
+            function success (htmlElement){
+                let checkmark = document.createElement('span');
+                checkmark.setAttribute('class','checkmark');
+                checkmark.innerHTML= `
+                                    <div class="checkmark_circle"></div>
+                                        <div class="checkmark_stem"></div>
+                                        <div class="checkmark_kick"></div>
+                                `;
+                htmlElement.parentNode.insertBefore(checkmark, htmlElement.nextSibling);
+            }
+            function fail (htmlElement) {
+                let redcross = document.createElement('span');
+                redcross.setAttribute('class','redcross');
+                redcross.innerHTML= 'X';
+                htmlElement.parentNode.insertBefore(redcross, htmlElement.nextSibling);
             }
 
         }
