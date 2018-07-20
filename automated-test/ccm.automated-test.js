@@ -58,10 +58,15 @@
                 self.element.appendChild(main_elem);
                 self.com.start(function () {
                     self.element.appendChild(self.com.root);
-                    self.runTest(my.scenario);
-
                     if (callback) callback();
                 });
+                self.element.onkeypress = function(e){
+                    let key = e.which || e.keyCode;
+                    if (key === 84) { // 84 is T
+                        self.runTest(my.scenario);
+                    }
+                };
+                if (callback) callback();
             };
 
             this.runTest = function (scenario) {
@@ -147,9 +152,9 @@
                     this.toTestTag.forEach(oneTag => {
                         this.testData.forEach(entry => {
                             oneTag.value = entry;
-                            let evt = new KeyboardEvent('keydown', {'keyCode':13, 'which':13});
-                            console.log(document.dispatchEvent(evt));
-                            document.dispatchEvent(evt);
+                            let evt = new KeyboardEvent('keypress', {'keyCode':13, 'which':13});
+                            self.com.element.onkeypress(evt);
+
                         });
                     });
                 };
