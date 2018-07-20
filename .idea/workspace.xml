@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fe5b4563-df04-4a05-9d67-979725875bb1" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/automated-test/ccm.automated-test.js" beforeDir="false" afterPath="$PROJECT_DIR$/automated-test/ccm.automated-test.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/todo-list/ccm.todo-list.js" beforeDir="false" afterPath="$PROJECT_DIR$/todo-list/ccm.todo-list.js" afterDir="false" />
     </list>
@@ -30,7 +31,7 @@
     <favorites_list name="ccm-components" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/todo-list/index.html">
           <provider selected="true" editor-type-id="text-editor">
@@ -52,8 +53,8 @@
       <file leaf-file-name="ccm.automated-test.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/automated-test/ccm.automated-test.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2327">
-              <caret line="153" column="49" selection-start-line="153" selection-start-column="49" selection-end-line="153" selection-end-column="49" />
+            <state relative-caret-position="176">
+              <caret line="147" column="106" selection-start-line="147" selection-start-column="106" selection-end-line="147" selection-end-column="106" />
             </state>
           </provider>
         </entry>
@@ -364,6 +365,7 @@
       <workItem from="1528668897148" duration="1648000" />
       <workItem from="1530099557563" duration="1003000" />
       <workItem from="1531235803998" duration="2171000" />
+      <workItem from="1532080483850" duration="559000" />
     </task>
     <task id="LOCAL-00001" summary="SE1 PWA in ccm">
       <created>1508689659386</created>
@@ -656,10 +658,11 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="238523000" />
+    <option name="totallyTimeSpent" value="239082000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="2" />
       <window_info anchor="bottom" id="TODO" order="7" />
@@ -922,8 +925,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/automated-test/ccm.automated-test.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2327">
-          <caret line="153" column="49" selection-start-line="153" selection-start-column="49" selection-end-line="153" selection-end-column="49" />
+        <state relative-caret-position="176">
+          <caret line="147" column="106" selection-start-line="147" selection-start-column="106" selection-end-line="147" selection-end-column="106" />
         </state>
       </provider>
     </entry>

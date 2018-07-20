@@ -64,7 +64,6 @@
                 self.element.appendChild(main_elem);
 
                 self.element.onkeypress = function (e) {
-                    console.log(e);
                     let key = e.which || e.keyCode;
                     if (key === 13) { // 13 is enter
                         let inputString = self.element.querySelector('.new-todo').value;
