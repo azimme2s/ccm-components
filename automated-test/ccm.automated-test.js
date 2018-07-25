@@ -36,7 +36,7 @@
                 {
                     scenarioname: 'Initial Data',
                     element: '.new-todo',
-                    action: ['intialize'],
+                    action: ['initialize'],
                     data: [1,2,3,4]
                 }
             ],
@@ -148,7 +148,7 @@
                         }
                     });
                 };
-                this.intialize = function () {
+                this.initialize = function () {
                     this.toTestTag.forEach(oneTag => {
                         this.testData.forEach(entry => {
                             oneTag.value = entry;
