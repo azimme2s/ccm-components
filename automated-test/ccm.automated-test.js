@@ -14,29 +14,10 @@
                         }
                     ]
                 },
-            scenarios: [
-                {
-                    scenarioname: 'Initial Data',
-                    scenario: [
-                        {
-                            element: '.new-todo',
-                            action: 'isEmptyInput',
-                            data: []
-                        },
-                        {
-                            element: '.new-todo',
-                            action: 'intialize',
-                            data: [1,2,3,'banane',5]
-                        },
-                        {
-                            element: 'li',
-                            action: 'checkAll',
-                            data: [1,2,3,'banane',5]
-                        }]
-                }
-            ],
+            scenarios: [],
             com: ['ccm.instance', '../todo-list/ccm.todo-list.js'],
-            css: ['ccm.load', 'style.css']
+            css: ['ccm.load', 'style.css'],
+            Actions: ['ccm.get', './Actions.js']
         },
 
         Instance: function () {
@@ -66,7 +47,7 @@
 
             this.runTest = function (scenarios) {
                scenarios.map(testRun => {
-                    let actions = new Actions();
+                    let actions = new Actions(self.com.element);
 
                     actions.scenarioName = testRun.scenarioname;
                     testRun.scenario.map(s => {
@@ -85,7 +66,7 @@
                 });
             };
 
-            function Actions() {
+            function Actionsl() {
                 this.toTestTag = [];
                 this.testData = [];
                 this.results = [];

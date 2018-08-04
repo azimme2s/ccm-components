@@ -73,11 +73,10 @@
                             let request = db.transaction(["todos"], "readwrite")
                                 .objectStore("todos")
                                 .add(entry);
-
+                            self.createNewTodo(entry, db);
                             request.onsuccess = function(event) {
                             console.log(event);
                             self.element.querySelector('.new-todo').value = null;
-                            self.createNewTodo(entry, db)
                             };
 
                             request.onerror = function(event) {
