@@ -14,30 +14,25 @@
                         }
                     ]
                 },
-            scenario: [
-                {
-                    scenarioname: 'first',
-                    element: 'h1',
-                    action: ['checkInner', 'replaceInner'],
-                    data: ["Test", "Test1"]
-                },
-                {
-                    scenarioname: 'check',
-                    element: 'a',
-                    action: ['checkInner', 'chechkForEmptyInner'],
-                    data: ["Test1"]
-                },
-                {
-                    scenarioname: 'empty input field',
-                    element: '.new-todo',
-                    action: ['isEmptyInput'],
-                    data: []
-                },
+            scenarios: [
                 {
                     scenarioname: 'Initial Data',
-                    element: '.new-todo',
-                    action: ['initialize'],
-                    data: [1,2,3,4]
+                    scenario: [
+                        {
+                            element: '.new-todo',
+                            action: 'isEmptyInput',
+                            data: []
+                        },
+                        {
+                            element: '.new-todo',
+                            action: 'intialize',
+                            data: [1,2,3,'banane',5]
+                        },
+                        {
+                            element: 'li',
+                            action: 'checkAll',
+                            data: [1,2,3,'banane',5]
+                        }]
                 }
             ],
             com: ['ccm.instance', '../todo-list/ccm.todo-list.js'],
@@ -60,41 +55,33 @@
                     self.element.appendChild(self.com.root);
                     if (callback) callback();
                 });
-                self.element.onkeypress = function(e){
+                window.onkeypress = function(e){
                     let key = e.which || e.keyCode;
                     if (key === 84) { // 84 is T
-                        self.runTest(my.scenario);
+                        self.runTest(my.scenarios);
                     }
                 };
                 if (callback) callback();
             };
 
-            this.runTest = function (scenario) {
-                scenario.forEach(testRun => {
+            this.runTest = function (scenarios) {
+               scenarios.map(testRun => {
                     let actions = new Actions();
 
                     actions.scenarioName = testRun.scenarioname;
-                    /**
-                     * Getting the Element by Tag|ID|Class
-                     * @type Node
-                     */
-                    actions.toTestTag = self.com.element.querySelectorAll(testRun.element);
-                    /**
-                     * Checking if the Element exist, if not the test is done and the failure will be saved in an Array
-                     */
-                    if (actions.toTestTag) {
-                        actions.testData = testRun.data;
+                    testRun.scenario.map(s => {
+                        actions.toTestTag = self.com.element.querySelectorAll(s.element);
 
-                        testRun.action.forEach(a => {
-                            if (actions.hasOwnProperty(a)) {
-                                actions[a]();
+                        if (actions.toTestTag) {
+                            actions.testData = s.data;
+                            if (actions.hasOwnProperty(s.action)) {
+                                actions[s.action]();
                             }
-                        })
-                    }
-                    else {
-                        actions.results.push("Scenario " + actions.scenarioName + " failed because of missing element " + testRun.element);
-                    }
-                    actions.showResults();
+                        }
+                        else {
+                            actions.results.push("Scenario " + actions.scenarioName + " failed because of missing element " + s.element);
+                        }
+                    });
                 });
             };
 
@@ -110,8 +97,8 @@
                             this.results.push("Scenario " + this.scenarioName + " checkInner passed");
                         }
                         else {
-                            console.log("No Inner found");
                             this.results.push("Scenario " + scenarioName + " failed because " + oneTag + "has no innerHTML");
+                            fail(oneTag)
                         }
                     });
                 };
@@ -119,9 +106,11 @@
                     this.toTestTag.forEach(oneTag => {
                         if (!oneTag.innerHTML) {
                             this.results.push("Scenario " + this.scenarioName + " check for empty passed");
+                            success(oneTag);
                         }
                         else {
                             this.results.push("Scenario " + this.scenarioName + " failed because " + oneTag + " is not empty");
+                            fail(oneTag);
                         }
                     });
                 };
@@ -131,9 +120,11 @@
                             oneTag.innerHTML = e;
                             if (oneTag.innerHTML === e) {
                                 this.results.push("Scenario " + this.scenarioName + " passed because text could be replaced with " + e);
+                                success(oneTag);
                             }
                             else {
                                 this.results.push("Scenario " + this.scenarioName + " failed because Text could be not replaced");
+                                fail(oneTag);
                             }
                         });
                     });
@@ -142,18 +133,34 @@
                     this.toTestTag.forEach(oneTag => {
                         if (oneTag.value === "" || oneTag.value === null) {
                             this.results.push("Scenario " +  this.scenarioName + " is empty");
+                            success(oneTag)
                         }
                         else {
+                            fail(oneTag);
                             this.results.push("Scenario " +  this.scenarioName + " failed because " + oneTag + " is not empty");
                         }
                     });
                 };
-                this.initialize = function () {
+                this.intialize = function () {
                     this.toTestTag.forEach(oneTag => {
                         this.testData.forEach(entry => {
                             oneTag.value = entry;
                             let evt = new KeyboardEvent('keypress', {'keyCode':13, 'which':13});
                             self.com.element.onkeypress(evt);
+                            this.results.push("Scenario " +  this.scenarioName + " succeed, event fired");
+                            success(oneTag);
+                        });
+                    });
+                };
+                this.checkAll = function () {
+                    this.toTestTag.forEach(oneTag => {
+                        this.testData.filter(data => {
+                            if(oneTag.querySelector('label').innerHTML == data){
+                                this.results.push("Element " + oneTag.innerHTML + "have value " + data);
+                                success(oneTag.querySelector('label'));
+                                return;
+                            }
+                            fail(oneTag.querySelector('label'));
                         });
                     });
                 };
@@ -178,6 +185,22 @@
                         console.log(element);
                     })
                 };
+            }
+            function success (htmlElement){
+                let checkmark = document.createElement('span');
+                checkmark.setAttribute('class','checkmark');
+                checkmark.innerHTML= `
+                                    <div class="checkmark_circle"></div>
+                                        <div class="checkmark_stem"></div>
+                                        <div class="checkmark_kick"></div>
+                                `;
+                htmlElement.parentNode.insertBefore(checkmark, htmlElement.nextSibling);
+            }
+            function fail (htmlElement) {
+                let redcross = document.createElement('span');
+                redcross.setAttribute('class','redcross');
+                redcross.innerHTML= 'X';
+                htmlElement.parentNode.insertBefore(redcross, htmlElement.nextSibling);
             }
 
         }
