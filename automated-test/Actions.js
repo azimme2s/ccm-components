@@ -2,29 +2,25 @@ function Actions(componentElement) {
 
     this.toTestTag = [];
     this.testData = [];
-    this.results = [];
     this.scenarioName;
 
     this.checkInner = function () {
         this.toTestTag.forEach(oneTag => {
             if (oneTag.innerHTML !== null || oneTag.innerHTML !== "") {
-                this.results.push("Scenario " + this.scenarioName + " checkInner passed");
+                success(oneTag, "Scenario " + this.scenarioName + " checkInner passed");
             }
             else {
-                this.results.push("Scenario " + scenarioName + " failed because " + oneTag + "has no innerHTML");
-                fail(oneTag)
+                fail(oneTag, "Scenario " + scenarioName + " failed because " + oneTag + "has no innerHTML")
             }
         });
     };
     this.chechkForEmptyInner = function () {
         this.toTestTag.forEach(oneTag => {
             if (!oneTag.innerHTML) {
-                this.results.push("Scenario " + this.scenarioName + " check for empty passed");
-                success(oneTag);
+                success(oneTag, "Scenario " + this.scenarioName + " check for empty passed");
             }
             else {
-                this.results.push("Scenario " + this.scenarioName + " failed because " + oneTag + " is not empty");
-                fail(oneTag);
+                fail(oneTag,"Scenario " + this.scenarioName + " failed because " + oneTag + " is not empty");
             }
         });
     };
@@ -33,12 +29,10 @@ function Actions(componentElement) {
             this.toTestTag.forEach(oneTag => {
                 oneTag.innerHTML = e;
                 if (oneTag.innerHTML === e) {
-                    this.results.push("Scenario " + this.scenarioName + " passed because text could be replaced with " + e);
-                    success(oneTag);
+                    success(oneTag, "Scenario " + this.scenarioName + " passed because text could be replaced with " + e);
                 }
                 else {
-                    this.results.push("Scenario " + this.scenarioName + " failed because Text could be not replaced");
-                    fail(oneTag);
+                    fail(oneTag,"Scenario " + this.scenarioName + " failed because Text could be not replaced");
                 }
             });
         });
@@ -46,12 +40,10 @@ function Actions(componentElement) {
     this.isEmptyInput = function () {
         this.toTestTag.forEach(oneTag => {
             if (oneTag.value === "" || oneTag.value === null) {
-                this.results.push("Scenario " +  this.scenarioName + " is empty");
                 success(oneTag,"Scenario " +  this.scenarioName + " is empty")
             }
             else {
                 fail(oneTag,"Scenario " +  this.scenarioName + " failed because " + oneTag + " is not empty");
-                this.results.push("Scenario " +  this.scenarioName + " failed because " + oneTag + " is not empty");
             }
         });
     };
@@ -61,7 +53,6 @@ function Actions(componentElement) {
                 oneTag.value = entry;
                 let evt = new KeyboardEvent('keypress', {'keyCode':13, 'which':13});
                 componentElement.onkeypress(evt);
-                this.results.push("Scenario " +  this.scenarioName + " succeed, event fired");
                 success(oneTag,"Scenario " +  this.scenarioName + " succeed, event fired");
             });
         });
@@ -70,7 +61,6 @@ function Actions(componentElement) {
         this.toTestTag.forEach(oneTag => {
             this.testData.filter(data => {
                 if(oneTag.querySelector('label').innerHTML == data){
-                    this.results.push("Element " + oneTag.innerHTML + "have value " + data);
                     success(oneTag.querySelector('label'),"Element " + oneTag.querySelector('label').innerHTML + " have value " + data);
                     return;
                 }
