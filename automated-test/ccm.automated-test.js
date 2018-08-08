@@ -14,7 +14,28 @@
                         }
                     ]
                 },
-            scenarios: [],
+                scenarios:[ 
+                    { 
+                        scenarioname: 'Initial Data', 
+                        scenario: [ 
+                            {
+                                element: '.new-todo',
+                                action: 'isEmptyInput',
+                                data: []
+                            },
+                            {
+                                element: '.new-todo',
+                                action: 'intialize',
+                                data: [1,2,3,'banane',5]
+                            },
+                            {
+                                element: 'li',
+                                action: 'checkAll',
+                                data: [1,2,3,'banane',5]
+                            }
+                        ]
+                    }
+                ],
             com: ['ccm.instance', '../todo-list/ccm.todo-list.js'],
             css: ['ccm.load', 'style.css'],
             Actions: ['ccm.get', './Actions.js']
