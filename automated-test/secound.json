@@ -1,0 +1,37 @@
+[
+  {
+    "scenarioname": "Manipulate Elements",
+    "scenario": [
+      {
+        "element": "h1",
+        "action": "checkInner",
+        "data": ["todos"]
+      },
+      {
+        "element": "h1",
+        "action": "replaceInner",
+        "data": ["Replace Test"]
+      },
+      {
+        "element": "h1",
+        "action": "checkInner",
+        "data": ["Replace Test"]
+      },
+      {
+        "element": "#b1",
+        "action": "checkBoxUntrue",
+        "data": []
+      },
+      {
+        "element": "#b1",
+        "action": "setCheckboxTrue",
+        "data": []
+      },
+      {
+        "element": "#b1",
+        "action": "checkForStrike",
+        "data": []
+      }
+    ]
+  }
+]

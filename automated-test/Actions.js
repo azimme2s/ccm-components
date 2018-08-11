@@ -68,6 +68,40 @@ function Actions(componentElement) {
             });
         });
     };
+    this.checkBoxUntrue = function () {
+        this.toTestTag.forEach( oneTag => {
+            if(!oneTag.querySelector('.toggle').checked){
+                success(oneTag.querySelector('.toggle'),"Element " + oneTag.querySelector('.toggle').innerHTML + " is unset");
+            }
+            else{
+                fail(oneTag.querySelector('.toggle'),"Element " + oneTag.querySelector('.toggle').innerHTML + " is set");
+            }
+        });
+    };
+    this.setCheckboxTrue = function () {
+        this.toTestTag.forEach( oneTag => {
+            if(!oneTag.querySelector('.toggle').checked){
+                oneTag.querySelector('.toggle').click();
+                oneTag.querySelector('.toggle').checked = true;
+                success(oneTag.querySelector('.toggle'),"Element " + oneTag.querySelector('.toggle').innerHTML + " is set");
+            }
+            else{
+                fail(oneTag.querySelector('.toggle'),"Element " + oneTag.querySelector('.toggle').innerHTML + " was already set");
+            }
+        });
+    };
+    this.checkForStrike = function () {
+        this.toTestTag.forEach( oneTag => {
+            let label = oneTag.querySelector('label');
+            if(label.querySelector('strike')){
+                success(label,"Element " + label + " is strike");
+            }
+            else{
+                fail(label,"Element " + label + " is not striked");
+            }
+        });
+    }
+
 }
 function success (htmlElement, sucessMessage){
     let checkmark = document.createElement('span');

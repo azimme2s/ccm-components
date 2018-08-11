@@ -127,7 +127,7 @@
                             if(element.checked){
                                ids.push(
                                    {
-                                        key:Number(element.parentElement.parentElement.id),
+                                        key:element.parentElement.parentElement.id,
                                         value: element.parentElement.parentElement
                                    }
                                        
@@ -168,7 +168,7 @@
 
             this.createNewTodo = function (todo, db) {
                 let newTodo = document.createElement('li');
-                newTodo.setAttribute('id',todo.id);
+                newTodo.setAttribute('id',"b"+todo.id);
                 let div = document.createElement('div');
                 div.setAttribute('class', 'view');
                 let input = document.createElement('input');
@@ -205,7 +205,7 @@
                     let id = newTodo.getAttribute('id');
                     let request = db.transaction(["todos"], "readwrite")
                         .objectStore("todos")
-                        .delete(Number(id));
+                        .delete(id);
                     request.onsuccess = function(event) {
                         newTodo.remove();
                     };
