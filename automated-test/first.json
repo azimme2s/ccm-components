@@ -1,0 +1,19 @@
+[{
+  "scenarioname": "Check Elements",
+  "scenario": [
+    {
+      "element": "h1",
+      "action": "checkInner",
+      "data": ["todos"]
+    },
+    {
+      "element": "h1",
+      "action": "checkInner",
+      "data": ["Todos"]
+    },
+    {
+      "element": "li",
+      "action": "checkInner",
+      "data": [1,2,3,"banane",5]
+    }]
+}]

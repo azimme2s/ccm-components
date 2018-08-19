@@ -68,14 +68,13 @@
                     if (key === 13) { // 13 is enter
                         let inputString = self.element.querySelector('.new-todo').value;
                         if(!(inputString.length === 0) || inputString.trim()){
-                            let entry = {id:counter++,todo:inputString,done:false};
+                            let entry = {id:"b"+counter++,todo:inputString,done:false};
                             let request = db.transaction(["todos"], "readwrite")
                                 .objectStore("todos")
                                 .add(entry);
-                                self.createNewTodo(entry, db);
+                            self.createNewTodo(entry, db);
                             request.onsuccess = function(event) {
-                                self.element.querySelector('.new-todo').value = null;
-
+                            self.element.querySelector('.new-todo').value = null;
                             };
 
                             request.onerror = function(event) {
@@ -126,7 +125,7 @@
                             if(element.checked){
                                ids.push(
                                    {
-                                        key:Number(element.parentElement.parentElement.id),
+                                        key: element.parentElement.parentElement.id,
                                         value: element.parentElement.parentElement
                                    }
                                        
@@ -204,7 +203,7 @@
                     let id = newTodo.getAttribute('id');
                     let request = db.transaction(["todos"], "readwrite")
                         .objectStore("todos")
-                        .delete(Number(id));
+                        .delete(id);
                     request.onsuccess = function(event) {
                         newTodo.remove();
                     };

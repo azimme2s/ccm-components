@@ -1,0 +1,26 @@
+[
+  {
+    "scenarioname": "Initial Data",
+    "scenario": [
+      {
+        "element": ".new-todo",
+        "action": "isEmptyInput",
+        "data": []
+      },
+      {
+        "element": ".new-todo",
+        "action": "intialize",
+        "data": [1,2,3,"banane",5]
+      },
+      {
+        "element": "li",
+        "action": "checkAll",
+        "data": [1,2,3,"banane",5]
+      },
+      {
+        "element": "li",
+        "action": "checkAll",
+        "data": [1,2,"banane",5, 7]
+      }]
+  }
+]
