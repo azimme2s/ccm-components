@@ -4,12 +4,10 @@
         ccm: "https://akless.github.io/ccm/ccm.js",
         config: {
             html: {},
-                scenarios:[
-                    'ccm.get', './third.json'
-                ],
+            scenarios:['ccm.get', './fourth.json'],
             com: ['ccm.instance', '../todo-list/ccm.todo-list.js'],
             css: ['ccm.load', 'style.css'],
-            Actions: ['ccm.get', './Actions.js']
+            //Actions: ['ccm.get', './Actions.js']
         },
 
         Instance: function () {
@@ -35,6 +33,12 @@
                     }
                 };
                 if (callback) callback();
+
+                Test.testFunc = function () {
+                        console.log("Better Test");
+                    };
+                console.log(Test.test);
+                Test.testFunc();
             };
 
             this.runTest = function (scenarios) {
@@ -42,7 +46,7 @@
                scenarios.map(testRun => {
                     let actions = new Actions(self.com.element);
                     actions.scenarioName = testRun.scenarioname;
-                   testRun.scenario.map(s => {
+                    testRun.scenario.map(s => {
                         actions.toTestTag = self.com.element.querySelectorAll(s.element);
 
                         if (actions.toTestTag) {
@@ -52,7 +56,7 @@
                             }
                         }
                         else {
-                            actions.results.push("Scenario " + actions.scenarioName + " failed because of missing element " + s.element);
+                           console.log("Test failed because no such element");
                         }
                     });
                 });

@@ -68,7 +68,7 @@
                     if (key === 13) { // 13 is enter
                         let inputString = self.element.querySelector('.new-todo').value;
                         if(!(inputString.length === 0) || inputString.trim()){
-                            let entry = {id:"b"+counter++,todo:inputString,done:false};
+                            let entry = {id:"b"+ counter++,todo:inputString,done:false};
                             let request = db.transaction(["todos"], "readwrite")
                                 .objectStore("todos")
                                 .add(entry);
@@ -149,11 +149,11 @@
                     let cursor = event.target.result;
                     if (cursor) {
                         if(cursor.value.done === flag){
-                            counter = cursor.value.id + 1;
+                            counter = Number(cursor.value.id.slice(1)) + 1;
                             self.createNewTodo(cursor.value, db);
                         }
                         else if(flag === null){
-                            counter = cursor.value.id + 1;
+                            counter = Number(cursor.value.id.slice(1)) + 1;
                             self.createNewTodo(cursor.value, db);
                         }
                         cursor.continue();

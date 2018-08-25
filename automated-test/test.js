@@ -1,0 +1,3 @@
+let Test = {
+    test:'test'
+};

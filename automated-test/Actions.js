@@ -6,13 +6,16 @@ function Actions(componentElement) {
 
     this.checkInner = function () {
         this.toTestTag.forEach(oneTag => {
-            if (oneTag.innerHTML !== null || oneTag.innerHTML !== "") {
-                success(oneTag, "Scenario " + this.scenarioName + " checkInner passed");
-            }
-            else {
-                fail(oneTag, "Scenario " + this.scenarioName + " failed because " + oneTag + "has no innerHTML")
-            }
+            this.testData.forEach(data => {
+                if (oneTag.innerHTML === data) {
+                    success(oneTag, "Scenario " + this.scenarioName + " checkInner passed, " + oneTag + "innerHTML is " + data);
+                }
+                else {
+                    fail(oneTag, "Scenario " + this.scenarioName + " failed because " + oneTag + "has no innerHTML with " + data)
+                }
+            });
         });
+
     };
     this.chechkForEmptyInner = function () {
         this.toTestTag.forEach(oneTag => {
