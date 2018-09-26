@@ -30,23 +30,30 @@
             this.start = function (callback) {
                 let main_elem = self.ccm.helper.html(my.html.progressbar);
                 self.element.appendChild(main_elem);
-                let val = 0;
-                this.setComplete(val);
+
+                let _complete = this.getComplete();
+                console.log(_complete);
+                this.setComplete(_complete);
                 
                 self.element.addEventListener("click", function(){
-                    val += 10;
-                    self.setComplete(val);
+                    _complete += 10;
+                    self.setComplete(_complete);
                 });
                 
                 if (callback) callback();
             };
             this.setComplete = function(value){
                 let innerBar = self.element.querySelector('.progress-bar-inner');
-                innerBar.style.width = value + '%';
-            }
+                if(innerBar.style.width !== "100%") {
+                    innerBar.style.width = value + '%';
+                }
+                if (value > 100) {
+                    innerBar.style.width = '100%';
+                }
+            };
             this.getComplete = function() {
-                return this.complete;
-            }
+                return my.complete;
+            };
             this.changeListener = function(value) {
                 this.setComplete(value);
             }
