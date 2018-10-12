@@ -14,11 +14,6 @@
                     }
                 }
             },
-            complete: 0,
-            sign: '%',
-            showText: true,
-            min: 0,
-            max: 100,
             css: ['ccm.load', 'style.css'],
         },
 
