@@ -15,6 +15,10 @@
                 }
             },
             complete: 0,
+            sign: '%',
+            showText: true,
+            min: 0,
+            max: 100,
             css: ['ccm.load', 'style.css'],
         },
 
@@ -31,32 +35,39 @@
                 let main_elem = self.ccm.helper.html(my.html.progressbar);
                 self.element.appendChild(main_elem);
 
+                this.setComplete(my.min);
                 let _complete = this.getComplete();
-                console.log(_complete);
-                this.setComplete(_complete);
-                
-                self.element.addEventListener("click", function(){
-                    _complete += 10;
-                    self.setComplete(_complete);
-                });
-                
+
+
+                for(let i= my.min; i <= my.max; i++){
+                    setTimeout(function () {
+                        _complete = i;
+                        self.setComplete(_complete);
+                    }, 100*i);
+                }
                 if (callback) callback();
             };
             this.setComplete = function(value){
+                let newValue = value / my.max;
+                newValue *= 100;
                 let innerBar = self.element.querySelector('.progress-bar-inner');
                 if(innerBar.style.width !== "100%") {
-                    innerBar.style.width = value + '%';
+                    innerBar.style.width = newValue + '%';
+                    if(my.showText){
+                        innerBar.innerHTML = value + my.sign;
+                    }
                 }
-                if (value > 100) {
+                if (newValue > 100) {
                     innerBar.style.width = '100%';
+                    if(my.showText){
+                        innerBar.innerHTML = value + my.sign;
+                    }
                 }
             };
             this.getComplete = function() {
                 return my.complete;
             };
-            this.changeListener = function(value) {
-                this.setComplete(value);
-            }
+
         }
     };
 
