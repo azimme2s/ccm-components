@@ -9,6 +9,7 @@ ccm.files[ 'configs.js' ] = {
     "local": {
 
         "key": "local",
+        "css.1": "resources/default.css",
         "complete": "0",
         "sign": '%',
         "showText": "true",
@@ -20,33 +21,10 @@ ccm.files[ 'configs.js' ] = {
     "demo": {
 
         "key": "demo",
-        "questions": [
-            {
-                "text": "Question A",
-                "answers": [ "Answer A", "Answer B", "Answer C" ]
-            },
-            {
-                "text": "Which Letter?",
-                "answers": [ "A", "B" ]
-            },
-            {
-                "text": "Which Number?",
-                "answers": [ "1", "2" ]
-            },
-            {
-                "text": "Do you agree?",
-                "answers": [ "Yes", "No" ]
-            },
-            {
-                "text": "Which Fruit",
-                "answers": [ "Apple", "Pear" ]
-            },
-            {
-                "text": "Enough?",
-                "answers": [ "Finish" ]
-            }
-        ]
-
+        "complete": "0",
+        "sign": '%',
+        "showText": "true",
+        "min": "0",
+        "max": "100"
     }
-
 };
