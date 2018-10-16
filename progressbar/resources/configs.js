@@ -7,24 +7,24 @@
 ccm.files[ 'configs.js' ] = {
 
     "local": {
-
         "key": "local",
         "css.1": "resources/default.css",
-        "complete": "0",
+        "testShow": true,
+        "complete": 75,
         "sign": '%',
-        "showText": "true",
-        "min": "0",
-        "max": "100"
+        "showText": true,
+        "min": 0,
+        "max": 100
 
     },
 
     "demo": {
-
         "key": "demo",
-        "complete": "0",
+        "testShow": true,
+        "complete": 0,
         "sign": '%',
-        "showText": "true",
-        "min": "0",
-        "max": "100"
+        "showText": true,
+        "min": 0,
+        "max": 100
     }
 };
