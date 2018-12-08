@@ -7,7 +7,7 @@
             scenarios:['ccm.get', './fourth.json'],
             com: ['ccm.instance', '../todo-list/ccm.todo-list.js'],
             css: ['ccm.load', 'style.css'],
-            //Actions: ['ccm.get', './Actions.js']
+            Actions: ['ccm.get', './Actions.js']
         },
 
         Instance: function () {
@@ -38,7 +38,6 @@
                         console.log("Better Test");
                     };
                 console.log(Test.test);
-                Test.testFunc();
             };
 
             this.runTest = function (scenarios) {

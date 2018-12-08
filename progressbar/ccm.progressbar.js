@@ -35,16 +35,18 @@
             this.start = async () => {
 
                 this.ccm.helper.setContent( this.element, this.ccm.helper.html( this.html.progressbar ) );
-                this.setComplete( this.getComplete() );
-                if(this.testShow){
-                    this.testFunction();
-                }
+
+                this.setComplete( this.min );
+                let _complete = this.getComplete();
+
+                for ( let i = this.min; i <= this.max; i++ )
+                    setTimeout( () => { _complete = i; this.setComplete( _complete ); }, 100 * i );
 
             };
 
             this.setComplete = value => {
 
-                let newValue = value / this.getMax();
+                let newValue = value / this.max;
                 newValue *= 100;
                 let innerBar = this.element.querySelector( '.progress-bar-inner' );
                 if ( innerBar.style.width !== '100%' ) {
@@ -61,25 +63,6 @@
             };
 
             this.getComplete = () => this.complete;
-            
-            this.getMin = () => this.min;
-
-            this.setMin = value => {
-                this.min = value;
-            }
-
-            this.getMax = () => this.max;
-
-            this.setMax = value => {
-                this.max = value;
-            }
-
-            this.testFunction  = () => {
-                let _complete = this.getComplete();
-                
-                for ( let i = this.getComplete(); i <= this.getMax(); i++ )
-                    setTimeout( () => { _complete = i; this.setComplete( _complete ); }, 100 * i );
-            }
 
         }
 

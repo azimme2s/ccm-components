@@ -26,7 +26,7 @@
 
 (function() {
     var component = {
-        name: 'nav-hamburger',
+        name: "nav-hamburger",
         ccm: 'https://akless.github.io/ccm/ccm.js',
         config: {
             'html': {

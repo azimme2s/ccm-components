@@ -37,44 +37,39 @@
             css:  ['ccm.load', 'style.css']
         },
         Instance: function () {
-            let self = this;
-            let my;
-            let indexedDB = window.indexedDB || self.window.mozIndexedDB || self.window.webkitIndexedDB || self.window.msIndexedDB || self.window.shimIndexedDB;
-            let open = indexedDB.open("TodoDB", 1);
-            let db;
-            open.onerror = function(event) {
-                console.log("Datenbankfehler: " + event.target.errorCode);
-            };
-            open.onsuccess = function(event) {
-                db = open.result;
-                self.readAll(db, null);
-            };
-            open.onupgradeneeded = function() {
-                let db = open.result;
-                let store = db.createObjectStore("todos", {keyPath: "id"});
-            };
-            let counter = 0;
-            this.ready = function (callback) {
-                my = self.ccm.helper.privatize(self);
-                if (callback) callback();
-            };
-            this.start = function (callback) {
 
-                let main_elem = self.ccm.helper.html(my.html);
-                self.element.appendChild(main_elem);
+            this.start = async () => {
+                let indexedDB = window.indexedDB || this.window.mozIndexedDB || this.window.webkitIndexedDB || this.window.msIndexedDB || this.window.shimIndexedDB;
+                let open = indexedDB.open("TodoDB", 1);
+                let db;
+                open.onerror = function(event) {
+                    console.log("Datenbankfehler: " + event.target.errorCode);
+                };
+                open.onsuccess = function(event) {
+                    db = open.result;
+                    this.readAll(db, null);
+                };
+                open.onupgradeneeded = function() {
+                    let db = open.result;
+                    let store = db.createObjectStore("todos", {keyPath: "id"});
+                };
+                let counter = 0;
 
-                self.element.onkeypress = function (e) {
+                this.ccm.helper.setContent( this.element, this.ccm.helper.html( this.html ) );
+
+
+                this.element.onkeypress = function (e) {
                     let key = e.which || e.keyCode;
                     if (key === 13) { // 13 is enter
-                        let inputString = self.element.querySelector('.new-todo').value;
+                        let inputString = element.querySelector('.new-todo').value;
                         if(!(inputString.length === 0) || inputString.trim()){
                             let entry = {id:"b"+ counter++,todo:inputString,done:false};
                             let request = db.transaction(["todos"], "readwrite")
                                 .objectStore("todos")
                                 .add(entry);
-                            self.createNewTodo(entry, db);
+                            this.createNewTodo(entry, db);
                             request.onsuccess = function(event) {
-                            self.element.querySelector('.new-todo').value = null;
+                            this.element.querySelector('.new-todo').value = null;
                             };
 
                             request.onerror = function(event) {
@@ -84,42 +79,42 @@
                     }
                 };
                 
-                self.element.querySelector('#all').addEventListener('click', function(){
-                    self.element.querySelectorAll('a').forEach(element => {
+                this.element.querySelector('#all').addEventListener('click', function(){
+                    this.element.querySelectorAll('a').forEach(element => {
                         element.removeAttribute('class');
                     });
 
-                    self.element.querySelectorAll('li').forEach(element => {
+                    this.element.querySelectorAll('li').forEach(element => {
                         element.remove();
                     });
 
-                    self.readAll(db,null);
-                    self.element.querySelector('#all').className ='selected';
+                    this.readAll(db,null);
+                    this.element.querySelector('#all').className ='selected';
                 });
-                self.element.querySelector('#active').addEventListener('click', function(){
-                    self.element.querySelectorAll('a').forEach(element => {
+                this.element.querySelector('#active').addEventListener('click', function(){
+                    this.element.querySelectorAll('a').forEach(element => {
                         element.removeAttribute('class');
                     });
-                    self.element.querySelectorAll('li').forEach(element => {
+                    this.element.querySelectorAll('li').forEach(element => {
                         element.remove();
                     });
-                    self.readAll(db,false);
-                    self.element.querySelector('#active').className ='selected';
+                    this.readAll(db,false);
+                    this.element.querySelector('#active').className ='selected';
                 });
-                self.element.querySelector('#completed').addEventListener('click', function(){
-                    self.element.querySelectorAll('a').forEach(element => {
+                this.element.querySelector('#completed').addEventListener('click', function(){
+                    this.element.querySelectorAll('a').forEach(element => {
                         element.removeAttribute('class');
                     });
-                    self.element.querySelectorAll('li').forEach(element => {
+                    this.element.querySelectorAll('li').forEach(element => {
                         element.remove();
                     });
-                    self.readAll(db,true);
-                    self.element.querySelector('#completed').className = '.selected';
+                    this.readAll(db,true);
+                    this.element.querySelector('#completed').className = '.selected';
                 });
 
 
-                self.element.querySelector('.clear-completed').addEventListener('click', function(){
-                        let items = self.element.querySelectorAll('.toggle');
+                this.element.querySelector('.clear-completed').addEventListener('click', function(){
+                        let items = this.element.querySelectorAll('.toggle');
                         let ids = [];
                         items.forEach(element => {
                             if(element.checked){
@@ -141,20 +136,20 @@
                             };
                         });  
                 });
-                if (callback) callback();
             };
-            this.readAll = function (db,flag) {
+
+            this.readAll =  (db, flag) => {
                 let objectStore = db.transaction("todos").objectStore("todos");
                 objectStore.openCursor().onsuccess = function(event) {
                     let cursor = event.target.result;
                     if (cursor) {
                         if(cursor.value.done === flag){
                             counter = Number(cursor.value.id.slice(1)) + 1;
-                            self.createNewTodo(cursor.value, db);
+                            this.createNewTodo(cursor.value, db);
                         }
                         else if(flag === null){
                             counter = Number(cursor.value.id.slice(1)) + 1;
-                            self.createNewTodo(cursor.value, db);
+                            this.createNewTodo(cursor.value, db);
                         }
                         cursor.continue();
                     }
@@ -164,7 +159,7 @@
                 };
             };
 
-            this.createNewTodo = function (todo, db) {
+            this.createNewTodo = (todo, db) => {
                 let newTodo = document.createElement('li');
                 newTodo.setAttribute('id',todo.id);
                 let div = document.createElement('div');
@@ -222,7 +217,7 @@
                 newTodo.appendChild(div);
 
 
-                let main = self.element.querySelector('.todo-list');
+                let main = this.element.querySelector('.todo-list');
                 main.appendChild(newTodo);
             }
         }
